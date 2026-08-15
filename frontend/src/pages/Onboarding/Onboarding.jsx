@@ -474,6 +474,7 @@ function QuestionFlow({ questions, onComplete, disabled = false, error = "" }) {
   const [answers, setAnswers] = useState({});
   const [pulseKey, setPulseKey] = useState(0);
   const [quietModeDefault, setQuietModeDefault] = useState(false);
+  const [showPrivacyModal, setShowPrivacyModal] = useState(false);
 
   const question = questions[index];
 
@@ -502,6 +503,15 @@ function QuestionFlow({ questions, onComplete, disabled = false, error = "" }) {
     } else {
       setIndex((current) => current + 1);
     }
+  };
+
+  const handleOptionClick = (option) => {
+    if (question.id === "privacy_consent" && option.letter === "B") {
+      setShowPrivacyModal(true);
+      return;
+    }
+
+    handleSelect(option.letter);
   };
 
   return (
@@ -590,7 +600,7 @@ function QuestionFlow({ questions, onComplete, disabled = false, error = "" }) {
               className={`gtk-option ${
                 selected === option.letter ? "is-selected" : ""
               }`}
-              onClick={() => handleSelect(option.letter)}
+              onClick={() => handleOptionClick(option)}
               aria-pressed={selected === option.letter}
             >
               <span className="gtk-option-letter">{option.letter}</span>
@@ -615,6 +625,111 @@ function QuestionFlow({ questions, onComplete, disabled = false, error = "" }) {
           {error}
         </p>
       )}
+
+      {showPrivacyModal && (
+        <PrivacyPolicyModal
+          onClose={() => setShowPrivacyModal(false)}
+          onAgree={() => {
+            handleSelect("A");
+            setShowPrivacyModal(false);
+          }}
+        />
+      )}
+    </div>
+  );
+}
+
+// ---------------------------------------------------------
+// Privacy policy modal
+// ---------------------------------------------------------
+
+function PrivacyPolicyModal({ onClose, onAgree }) {
+  return (
+    <div className="gtk-modal-overlay" role="presentation" onClick={onClose}>
+      <div
+        className="gtk-modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="privacy-modal-title"
+        onClick={(event) => event.stopPropagation()}
+      >
+        <button
+          type="button"
+          className="gtk-modal-close"
+          aria-label="Close"
+          onClick={onClose}
+        >
+          <CloseIcon />
+        </button>
+
+        <div className="gtk-modal-sphere" aria-hidden="true" />
+
+        <h2 id="privacy-modal-title" className="gtk-modal-title">
+          Your data. Your rules.
+        </h2>
+
+        <p className="gtk-modal-subtitle">
+          Aura is designed to keep your sensitive signals under your control.
+        </p>
+
+        <ul className="gtk-modal-feature-list">
+          <li className="gtk-modal-feature">
+            <span className="gtk-modal-feature-icon" aria-hidden="true">
+              <LockIcon />
+            </span>
+            <span className="gtk-modal-feature-text">
+              <span className="gtk-modal-feature-title">
+                On device processing
+              </span>
+              <span className="gtk-modal-feature-desc">
+                Raw audio isn't stored or uploaded.
+              </span>
+            </span>
+          </li>
+
+          <li className="gtk-modal-feature">
+            <span className="gtk-modal-feature-icon" aria-hidden="true">
+              <ShieldIcon />
+            </span>
+            <span className="gtk-modal-feature-text">
+              <span className="gtk-modal-feature-title">Private by design</span>
+              <span className="gtk-modal-feature-desc">
+                Your emotional data belongs to you.
+              </span>
+            </span>
+          </li>
+
+          <li className="gtk-modal-feature">
+            <span className="gtk-modal-feature-icon" aria-hidden="true">
+              <ControlIcon />
+            </span>
+            <span className="gtk-modal-feature-text">
+              <span className="gtk-modal-feature-title">
+                You stay in control
+              </span>
+              <span className="gtk-modal-feature-desc">
+                Aura recommends. You decide.
+              </span>
+            </span>
+          </li>
+        </ul>
+
+        <button
+          type="button"
+          className="gtk-btn gtk-btn-primary gtk-modal-agree"
+          onClick={onAgree}
+        >
+          I understand, activate Aura
+        </button>
+
+        <button
+          type="button"
+          className="gtk-link-btn gtk-modal-cancel"
+          onClick={onClose}
+        >
+          Cancel
+        </button>
+      </div>
     </div>
   );
 }
@@ -688,6 +803,59 @@ function LockIcon() {
       />
 
       <path d="M8 11V7a4 4 0 018 0v4" stroke="currentColor" strokeWidth="1.8" />
+    </svg>
+  );
+}
+
+function ShieldIcon() {
+  return (
+    <svg
+      width="14"
+      height="14"
+      viewBox="0 0 24 24"
+      fill="none"
+      aria-hidden="true"
+    >
+      <path
+        d="M12 3l7 3v5c0 5-3.2 8.5-7 10-3.8-1.5-7-5-7-10V6l7-3z"
+        stroke="currentColor"
+        strokeWidth="1.8"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
+function ControlIcon() {
+  return (
+    <svg
+      width="14"
+      height="14"
+      viewBox="0 0 24 24"
+      fill="none"
+      aria-hidden="true"
+    >
+      <circle cx="12" cy="12" r="8" stroke="currentColor" strokeWidth="1.8" />
+      <circle cx="12" cy="12" r="2.6" fill="currentColor" />
+    </svg>
+  );
+}
+
+function CloseIcon() {
+  return (
+    <svg
+      width="16"
+      height="16"
+      viewBox="0 0 24 24"
+      fill="none"
+      aria-hidden="true"
+    >
+      <path
+        d="M5 5l14 14M19 5L5 19"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+      />
     </svg>
   );
 }

@@ -311,7 +311,6 @@
   background: #8b7cf6;
 }
 
-
 .gtk-toggle-thumb {
   width: 18px;
   height: 18px;
@@ -419,11 +418,16 @@
 
 .gtk-btn {
   width: 100%;
-  height: 52px;
+  height: 54px;
+  padding: 20px 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   border-radius: 14px;
   border: none;
   font-size: 15px;
   font-weight: 600;
+  letter-spacing: 0.1px;
   cursor: pointer;
   transition:
     transform 0.1s ease,
@@ -753,5 +757,211 @@
   .gtk-btn,
   .gtk-mic-btn {
     transition: none;
+  }
+}
+
+.gtk-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: rgba(8, 7, 16, 0.75);
+  backdrop-filter: blur(8px);
+  animation: gtk-modal-fade-in 0.15s ease-out;
+}
+
+@keyframes gtk-modal-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.gtk-modal {
+  position: relative;
+  width: 100%;
+  max-width: 400px;
+  max-height: 90vh;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  background: linear-gradient(180deg, #14121f 0%, #1b1630 100%);
+  border: 1px solid var(--panel-border);
+  border-radius: 26px;
+  padding: 52px 34px 36px;
+  animation: gtk-modal-rise 0.2s ease-out;
+
+  scrollbar-width: thin;
+  scrollbar-color: rgba(139, 124, 246, 0.55) transparent;
+}
+
+@keyframes gtk-modal-rise {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.gtk-modal::-webkit-scrollbar {
+  width: 6px;
+}
+
+.gtk-modal::-webkit-scrollbar-track {
+  background: transparent;
+  margin-block: 20px;
+}
+
+.gtk-modal::-webkit-scrollbar-thumb {
+  background: linear-gradient(
+    180deg,
+    var(--accent-purple) 0%,
+    var(--sphere-core) 100%
+  );
+  border-radius: 10px;
+}
+
+.gtk-modal::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(
+    180deg,
+    var(--sphere-core) 0%,
+    var(--accent-purple) 100%
+  );
+}
+
+.gtk-modal-close {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  width: 34px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  border: 1px solid var(--panel-border);
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition:
+    background 0.15s ease,
+    color 0.15s ease;
+}
+
+.gtk-modal-close:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--text-primary);
+}
+
+.gtk-modal-sphere {
+  width: 108px;
+  height: 108px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at 35% 30%,
+    var(--sphere-core),
+    var(--sphere-edge) 70%
+  );
+  box-shadow: 0 0 80px 10px rgba(74, 129, 226, 0.35);
+  margin: 4px 0 28px;
+  flex-shrink: 0;
+}
+
+.gtk-modal-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0 0 14px;
+}
+
+.gtk-modal-subtitle {
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--text-secondary);
+  margin: 0 0 34px;
+  max-width: 300px;
+}
+
+.gtk-modal-feature-list {
+  list-style: none;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin: 0 0 34px;
+  padding: 0;
+}
+
+.gtk-modal-feature {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  text-align: left;
+  padding: 16px 18px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--panel-border);
+}
+
+.gtk-modal-feature-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  flex-shrink: 0;
+  border-radius: 9px;
+  background: rgba(139, 124, 246, 0.14);
+  color: var(--accent-purple);
+  margin-top: 1px;
+}
+
+.gtk-modal-feature-text {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.gtk-modal-feature-title {
+  font-size: 14.5px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.gtk-modal-feature-desc {
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: var(--text-secondary);
+}
+
+.gtk-modal-agree {
+  height: 56px;
+  margin-bottom: 18px;
+}
+
+.gtk-modal-cancel {
+  color: var(--text-secondary);
+  padding: 10px 16px;
+}
+
+@media (max-width: 380px) {
+  .gtk-modal {
+    padding: 44px 24px 28px;
+  }
+
+  .gtk-modal-sphere {
+    width: 90px;
+    height: 90px;
+    margin-bottom: 22px;
   }
 }
