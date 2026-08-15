@@ -1,0 +1,87 @@
+.sw-wrap {
+  --sphere-core: #6fa8ff;
+  --accent-purple: #8b6de0;
+  --text-muted: rgba(245, 245, 250, 0.4);
+
+  position: relative;
+  width: clamp(200px, 56vw, 260px);
+  height: clamp(200px, 56vw, 260px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sw-pulse-ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 1px solid rgba(139, 109, 224, 0.4);
+}
+
+.sw-bars {
+  position: absolute;
+  inset: 0;
+}
+
+.sw-bar {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 3px;
+  height: 22px;
+  border-radius: 2px;
+  background: linear-gradient(
+    180deg,
+    var(--sphere-core) 0%,
+    var(--accent-purple) 100%
+  );
+  transform-origin: bottom center;
+  will-change: transform;
+}
+
+.sw-core {
+  position: relative;
+  width: 76px;
+  height: 76px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at 35% 30%,
+    var(--sphere-core),
+    var(--accent-purple) 85%
+  );
+  box-shadow: 0 0 50px 6px rgba(111, 168, 255, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  z-index: 1;
+}
+
+.sw-fallback-note {
+  position: absolute;
+  bottom: -28px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 11px;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+@media (min-width: 1024px) {
+  .sw-wrap {
+    width: 300px;
+    height: 300px;
+  }
+
+  .sw-core {
+    width: 92px;
+    height: 92px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sw-pulse-ring,
+  .sw-core {
+    animation: none !important;
+  }
+}
