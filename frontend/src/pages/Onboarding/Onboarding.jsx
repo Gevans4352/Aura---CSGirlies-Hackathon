@@ -38,10 +38,16 @@ const QUESTIONS = [
     title: "How should aura respond?",
     subtitle: "Choose how Aura communicates with you.",
     options: [
-      { letter: "A", text: "Direct and factual" },
-      { letter: "B", text: "Gentle and supportive" },
-      { letter: "C", text: "Communicating when I need space" },
-      { letter: "D", text: "All of the above" },
+      {
+        letter: "A",
+        title: "Direct & Factual",
+        description: "Clear alerts, concise insights, no sugar-coating.",
+      },
+      {
+        letter: "B",
+        title: "Gentle & Supportive",
+        description: "Softer language, supportive suggestions, more context.",
+      },
     ],
   },
   {
@@ -68,7 +74,7 @@ const QUESTIONS = [
 ];
 
 export default function GetToKnowMe() {
-  const [step, setStep] = useState("intro"); // "intro" | "voice" | "questions" | "done"
+  const [step, setStep] = useState("intro"); // "intro" | "voice" | "typing" | "calendar" | "questions" | "done"
   const [voiceSampleUrl, setVoiceSampleUrl] = useState(null);
   const navigate = useNavigate();
   const [submitting, setSubmitting] = useState(false);
@@ -76,6 +82,16 @@ export default function GetToKnowMe() {
 
   const handleVoiceContinue = (audioUrl) => {
     setVoiceSampleUrl(audioUrl);
+    setStep("typing");
+  };
+
+  const handleTypingContinue = (baseline) => {
+    setTypingBaseline(baseline);
+    setStep("calendar");
+  };
+
+  const handleCalendarContinue = (commitments) => {
+    setCalendarLoad(commitments);
     setStep("questions");
   };
 
@@ -92,10 +108,24 @@ export default function GetToKnowMe() {
     }
   };
 
+  // Once onboarding wraps up, hold on the confirmation for a beat so
+  // it reads as intentional rather than a flash, then move on.
+  useEffect(() => {
+    if (step !== "done") return undefined;
+    const timer = setTimeout(() => navigate("/dashboard"), 2200);
+    return () => clearTimeout(timer);
+  }, [step, navigate]);
+
   return (
     <div className="gtk-page">
       {step === "intro" && <IntroStep onBegin={() => setStep("voice")} />}
       {step === "voice" && <VoiceStep onContinue={handleVoiceContinue} />}
+      {step === "typing" && (
+        <TypingBaselineStep onContinue={handleTypingContinue} />
+      )}
+      {step === "calendar" && (
+        <CalendarLoadStep onContinue={handleCalendarContinue} />
+      )}
       {step === "questions" && (
         <QuestionFlow
           questions={QUESTIONS}
@@ -229,7 +259,13 @@ function VoiceStep({ onContinue }) {
         if (e.data.size > 0) chunksRef.current.push(e.data);
       };
       recorder.onstop = () => {
-        const blob = new Blob(chunksRef.current, { type: "audio/webm" });
+        // Use the mimeType the browser actually recorded with, not a
+        // hardcoded guess — Safari and Chrome pick different codecs by
+        // default (audio/mp4 vs audio/webm), and labeling the Blob
+        // wrong makes it record fine but play back silently, no error.
+        const blob = new Blob(chunksRef.current, {
+          type: recorder.mimeType || "audio/webm",
+        });
         setAudioUrl(URL.createObjectURL(blob));
         setRecordingState("recorded");
         stopVisualizer();
@@ -357,6 +393,7 @@ function QuestionFlow({ questions, onComplete, disabled = false, error = "" }) {
   const [index, setIndex] = useState(0);
   const [answers, setAnswers] = useState({});
   const [pulseKey, setPulseKey] = useState(0);
+  const [quietModeDefault, setQuietModeDefault] = useState(false);
 
   const question = questions[index];
   const selected = answers[question.id];
@@ -365,6 +402,11 @@ function QuestionFlow({ questions, onComplete, disabled = false, error = "" }) {
   const handleSelect = (letter) => {
     setAnswers((prev) => ({ ...prev, [question.id]: letter }));
     setPulseKey((k) => k + 1);
+  };
+
+  const handleQuietModeChange = (value) => {
+    setQuietModeDefault(value);
+    setAnswers((prev) => ({ ...prev, quiet_mode_default: value }));
   };
 
   const handleContinue = () => {
@@ -406,20 +448,64 @@ function QuestionFlow({ questions, onComplete, disabled = false, error = "" }) {
         aria-hidden="true"
       />
 
-      <div className="gtk-options">
-        {question.options.map((opt) => (
-          <button
-            key={opt.letter}
-            type="button"
-            className={`gtk-option ${selected === opt.letter ? "is-selected" : ""}`}
-            onClick={() => handleSelect(opt.letter)}
-            aria-pressed={selected === opt.letter}
-          >
-            <span className="gtk-option-letter">{opt.letter}</span>
-            <span className="gtk-option-text">{opt.text}</span>
-          </button>
-        ))}
-      </div>
+      {question.layout === "toneCard" ? (
+        <>
+          <div className="gtk-tone-list">
+            {question.options.map((opt) => (
+              <button
+                key={opt.letter}
+                type="button"
+                className={`gtk-tone-card ${
+                  selected === opt.letter ? "is-selected" : ""
+                }`}
+                onClick={() => handleSelect(opt.letter)}
+                aria-pressed={selected === opt.letter}
+              >
+                <span className="gtk-tone-indicator" aria-hidden="true">
+                  {selected === opt.letter && <CheckIcon />}
+                </span>
+                <span className="gtk-tone-text">
+                  <span className="gtk-tone-title">{opt.title}</span>
+                  <span className="gtk-tone-desc">{opt.description}</span>
+                </span>
+              </button>
+            ))}
+          </div>
+
+          <div className="gtk-quiet-row">
+            <div>
+              <p className="gtk-quiet-title">Quiet Mode</p>
+              <p className="gtk-quiet-desc">
+                Minimize visible alerts when you&apos;re in public.
+              </p>
+            </div>
+            <button
+              type="button"
+              role="switch"
+              aria-checked={quietModeDefault}
+              className={`gtk-toggle ${quietModeDefault ? "is-on" : ""}`}
+              onClick={() => handleQuietModeChange(!quietModeDefault)}
+            >
+              <span className="gtk-toggle-thumb" />
+            </button>
+          </div>
+        </>
+      ) : (
+        <div className="gtk-options">
+          {question.options.map((opt) => (
+            <button
+              key={opt.letter}
+              type="button"
+              className={`gtk-option ${selected === opt.letter ? "is-selected" : ""}`}
+              onClick={() => handleSelect(opt.letter)}
+              aria-pressed={selected === opt.letter}
+            >
+              <span className="gtk-option-letter">{opt.letter}</span>
+              <span className="gtk-option-text">{opt.text}</span>
+            </button>
+          ))}
+        </div>
+      )}
 
       <button
         type="button"
@@ -439,6 +525,26 @@ function QuestionFlow({ questions, onComplete, disabled = false, error = "" }) {
 }
 
 // Icons
+
+function CheckIcon() {
+  return (
+    <svg
+      width="12"
+      height="12"
+      viewBox="0 0 24 24"
+      fill="none"
+      aria-hidden="true"
+    >
+      <path
+        d="M4 12.5l5 5L20 6.5"
+        stroke="currentColor"
+        strokeWidth="2.4"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
 
 function MicIcon() {
   return (
@@ -484,5 +590,247 @@ function LockIcon() {
       />
       <path d="M8 11V7a4 4 0 018 0v4" stroke="currentColor" strokeWidth="1.8" />
     </svg>
+  );
+}
+
+// Typing baseline capture
+
+// Any gap between keystrokes longer than this counts as a "pause"
+// rather than normal typing rhythm.
+const PAUSE_THRESHOLD_MS = 600;
+const MIN_CHARS_TO_CONTINUE = 20;
+
+function formatTimer(totalSeconds) {
+  const m = Math.floor(totalSeconds / 60)
+    .toString()
+    .padStart(2, "0");
+  const s = (totalSeconds % 60).toString().padStart(2, "0");
+  return `${m}:${s}`;
+}
+
+function TypingBaselineStep({ onContinue }) {
+  const [text, setText] = useState("");
+  const [elapsedSeconds, setElapsedSeconds] = useState(0);
+  const [corrections, setCorrections] = useState(0);
+  const [isRecording, setIsRecording] = useState(false);
+
+  const lastKeystrokeRef = useRef(null);
+  const pausesRef = useRef([]);
+
+  useEffect(() => {
+    if (!isRecording) return undefined;
+    const id = setInterval(() => setElapsedSeconds((s) => s + 1), 1000);
+    return () => clearInterval(id);
+  }, [isRecording]);
+
+  const handleKeyDown = (e) => {
+    const now = performance.now();
+
+    if (lastKeystrokeRef.current === null) {
+      setIsRecording(true);
+    } else {
+      const gap = now - lastKeystrokeRef.current;
+      if (gap > PAUSE_THRESHOLD_MS) pausesRef.current.push(gap);
+    }
+    lastKeystrokeRef.current = now;
+
+    if (e.key === "Backspace" || e.key === "Delete") {
+      setCorrections((c) => c + 1);
+    }
+  };
+
+  // Character-based WPM (chars / 5 = words) — more stable than a
+  // word-count split in the first few seconds, when word boundaries
+  // are still sparse.
+  const minutesElapsed = Math.max(elapsedSeconds / 60, 1 / 60);
+  const wpm =
+    text.trim().length > 0
+      ? Math.round(text.trim().length / 5 / minutesElapsed)
+      : 0;
+
+  const avgPauseSec = pausesRef.current.length
+    ? (
+        pausesRef.current.reduce((sum, g) => sum + g, 0) /
+        pausesRef.current.length /
+        1000
+      ).toFixed(1)
+    : "0.0";
+
+  const canContinue = text.trim().length >= MIN_CHARS_TO_CONTINUE;
+
+  const handleContinue = () => {
+    if (!canContinue) return;
+    onContinue({
+      wpm,
+      avgPauseSec: Number(avgPauseSec),
+      corrections,
+      sampleLength: text.trim().length,
+    });
+  };
+
+  return (
+    <div className="gtk-step gtk-step-typing">
+      <div className="gtk-copy">
+        <h1 className="gtk-title">Find Your Typing Baseline</h1>
+        <p className="gtk-subtitle">
+          Aura learns how you naturally type so it can recognize changes later.
+        </p>
+      </div>
+
+      <div className="gtk-sphere gtk-sphere-breathe" aria-hidden="true" />
+
+      <div className="gtk-typing-block">
+        <p className="gtk-typing-label">Type naturally</p>
+        <p className="gtk-typing-hint">
+          Don&apos;t worry about speed or accuracy. Just write the way you
+          normally would.
+        </p>
+
+        <textarea
+          className="gtk-typing-textarea"
+          value={text}
+          onChange={(e) => setText(e.target.value)}
+          onKeyDown={handleKeyDown}
+          placeholder="Today feels like a pretty normal day."
+          rows={3}
+        />
+
+        <div className="gtk-typing-status-row">
+          <span className="gtk-typing-status-text">
+            <span
+              className={`gtk-typing-dot ${isRecording ? "is-active" : ""}`}
+              aria-hidden="true"
+            />
+            Recording typing pattern
+          </span>
+          <span className="gtk-typing-timer">
+            {formatTimer(elapsedSeconds)}
+          </span>
+        </div>
+
+        <div className="gtk-typing-metrics">
+          <div className="gtk-typing-metric">
+            <p className="gtk-typing-metric-label">Typing Speed</p>
+            <p className="gtk-typing-metric-value">
+              {wpm}
+              <span className="gtk-typing-metric-unit"> WPM</span>
+            </p>
+          </div>
+          <div className="gtk-typing-metric">
+            <p className="gtk-typing-metric-label">Pauses</p>
+            <p className="gtk-typing-metric-value">
+              {avgPauseSec}
+              <span className="gtk-typing-metric-unit"> sec</span>
+            </p>
+          </div>
+          <div className="gtk-typing-metric">
+            <p className="gtk-typing-metric-label">Corrections</p>
+            <p className="gtk-typing-metric-value">{corrections}</p>
+          </div>
+        </div>
+      </div>
+
+      <button
+        type="button"
+        className="gtk-btn gtk-btn-primary"
+        disabled={!canContinue}
+        onClick={handleContinue}
+      >
+        Continue
+      </button>
+    </div>
+  );
+}
+
+// Calendar load capture
+
+let commitmentIdCounter = 0;
+function nextCommitmentId() {
+  commitmentIdCounter += 1;
+  return `commitment_${commitmentIdCounter}`;
+}
+
+function CalendarLoadStep({ onContinue }) {
+  const [commitments, setCommitments] = useState([
+    { id: nextCommitmentId(), text: "" },
+  ]);
+
+  const handleChange = (id, value) => {
+    setCommitments((list) =>
+      list.map((c) => (c.id === id ? { ...c, text: value } : c)),
+    );
+  };
+
+  const handleAddRow = () => {
+    setCommitments((list) => [...list, { id: nextCommitmentId(), text: "" }]);
+  };
+
+  const handleRemoveRow = (id) => {
+    setCommitments((list) => list.filter((c) => c.id !== id));
+  };
+
+  const handleContinue = () => {
+    const filled = commitments
+      .map((c) => c.text.trim())
+      .filter((text) => text.length > 0);
+    onContinue(filled);
+  };
+
+  return (
+    <div className="gtk-step gtk-step-calendar">
+      <div className="gtk-copy">
+        <h1 className="gtk-title">Understand your Calendar Load</h1>
+        <p className="gtk-subtitle">
+          Aura uses your schedule to understand how much social energy your day
+          may require.
+        </p>
+      </div>
+
+      <div className="gtk-sphere gtk-sphere-breathe" aria-hidden="true" />
+
+      <div className="gtk-calendar-block">
+        <p className="gtk-typing-label">Today&apos;s commitments</p>
+
+        <div className="gtk-calendar-list">
+          {commitments.map((c, i) => (
+            <div key={c.id} className="gtk-calendar-row">
+              <input
+                type="text"
+                className="gtk-calendar-input"
+                value={c.text}
+                onChange={(e) => handleChange(c.id, e.target.value)}
+                placeholder={`Event ${i + 1}`}
+              />
+              {commitments.length > 1 && (
+                <button
+                  type="button"
+                  className="gtk-calendar-remove"
+                  aria-label="Remove commitment"
+                  onClick={() => handleRemoveRow(c.id)}
+                >
+                  ×
+                </button>
+              )}
+            </div>
+          ))}
+        </div>
+
+        <button
+          type="button"
+          className="gtk-calendar-add"
+          onClick={handleAddRow}
+        >
+          + Add another commitment
+        </button>
+      </div>
+
+      <button
+        type="button"
+        className="gtk-btn gtk-btn-primary"
+        onClick={handleContinue}
+      >
+        Continue
+      </button>
+    </div>
   );
 }
