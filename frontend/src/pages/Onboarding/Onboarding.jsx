@@ -33,6 +33,17 @@ const QUESTIONS = [
   },
   {
     id: "priority",
+    title: "Hhow should aura respond?",
+    subtitle: "choose h ow aura communicates with you",
+    options: [
+      { letter: "A", text: "Direct and factual" },
+      { letter: "B", text: "Gentle and supportive" },
+      { letter: "C", text: "Communicating when I need space" },
+      { letter: "D", text: "All of the above" },
+    ],
+  },
+   {
+    id: "priority",
     title: "What matters most to you?",
     subtitle: "What would you like Aura to help you with?",
     options: [
@@ -44,8 +55,9 @@ const QUESTIONS = [
   },
   {
     id: "Privacy",
-    title: "To keep your data completely private, Aura never sends raw audio to the cloud. To activate your personalized model, we just need to store your baseline voice fingerprint as anonymous numbers on this device. Do you agree?",
-    options: [
+    title: "Onboarding",
+    subtitle: "To keep your data completely private, Aura never sends raw audio to the cloud. To activate your personalized model, we just need to store your baseline voice fingerprint as anonymous numbers on this device. Do you agree?",
+     options: [
       { letter: "A", text: " YES, Activate Aura" },
       { letter: "B", text: "Learn more about how it works" },
     ],
