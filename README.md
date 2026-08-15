@@ -300,10 +300,11 @@ npm run build
 | POST | `/api/v1/auth/login` | Signs in a user and returns session tokens. Body: `{email, password}` | None |
 | GET | `/api/v1/auth/me` | Returns the current authenticated user | Bearer token |
 | POST | `/api/v1/auth/logout` | Ends the current session | Bearer token |
+| POST | `/api/v1/auth/refresh` | Rotates the access token. Body: `{refresh_token}` | None |
 | GET | `/api/v1/health` | Health check | None |
 | POST | `/api/v1/analyze` | Simulated vocal analysis. Returns a pre-calculated stress score. | None |
 | GET | `/api/v1/onboarding` | Returns the authenticated user's onboarding profile and derived baseline | Bearer token |
-| POST | `/api/v1/onboarding` | Saves onboarding answers and derives baseline MSI. Body: `{answers: {...}}` | Bearer token |
+| POST | `/api/v1/onboarding` | Saves onboarding answers and derives baseline MSI. `Body: {answers: {...}, quiet_mode_default?: boolean}` | Bearer token |
 
 **Auth Response (200 OK):** `register` and `login` return session tokens:
 

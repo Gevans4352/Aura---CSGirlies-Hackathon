@@ -1,5 +1,4 @@
 import logging
-from venv import logger
 
 from app.deps import (
     get_access_token,
@@ -7,7 +6,7 @@ from app.deps import (
     get_current_user,
     get_user_client,
 )
-from app.schemas import AuthOut, LoginIn, RegisterIn, UserOut
+from app.schemas import AuthOut, LoginIn, RefreshIn, RegisterIn, UserOut
 from fastapi import APIRouter, Depends, HTTPException
 from supabase import AuthApiError
 
@@ -55,6 +54,15 @@ def login(body: LoginIn, client=Depends(get_user_client)):
         res = client.auth.sign_in_with_password(
             {"email": body.email, "password": body.password}
         )
+    except AuthApiError as err:
+        raise HTTPException(status_code=err.status or 401, detail=err.message)
+    return _auth_out(res)
+
+
+@router.post("/refresh", response_model=AuthOut)
+def refresh(body: RefreshIn, client=Depends(get_user_client)):
+    try:
+        res = client.auth.refresh_session(body.refresh_token)
     except AuthApiError as err:
         raise HTTPException(status_code=err.status or 401, detail=err.message)
     return _auth_out(res)
