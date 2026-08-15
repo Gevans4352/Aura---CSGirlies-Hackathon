@@ -318,6 +318,23 @@
   border: 1px solid var(--panel-border);
 }
 
+.dash-insight-card-clickable {
+  cursor: pointer;
+  transition:
+    background 0.15s ease,
+    border-color 0.15s ease;
+}
+
+.dash-insight-card-clickable:hover {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.16);
+}
+
+.dash-insight-card-clickable:focus-visible {
+  outline: 2px solid var(--accent-purple);
+  outline-offset: 2px;
+}
+
 .dash-insight-icon {
   flex-shrink: 0;
   width: 32px;
