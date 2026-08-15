@@ -1,4 +1,5 @@
 import logging
+from venv import logger
 
 from app.deps import (
     get_access_token,
@@ -64,9 +65,12 @@ def me(user=Depends(get_current_user)):
     return _user_out(user)
 
 
+logger = logging.getLogger(__name__)
+
+
 @router.post("/logout", status_code=204)
 def logout(token: str = Depends(get_access_token), client=Depends(get_admin_client)):
     try:
         client.auth.admin.sign_out(token)
-    except AuthApiError:
-        pass
+    except AuthApiError as err:
+        logger.warning("logout failed: %s", err.message)
