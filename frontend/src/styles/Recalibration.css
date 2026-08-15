@@ -23,6 +23,40 @@
   flex: 1;
   padding: 24px 20px 96px;
 }
+.rc-templates-heading-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.rc-tone-toggle {
+  display: flex;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 999px;
+  padding: 3px;
+  gap: 2px;
+}
+
+.rc-tone-btn {
+  background: transparent;
+  border: none;
+  color: #9d97b3;
+  font-size: 12.5px;
+  font-weight: 600;
+  padding: 6px 14px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition:
+    background 0.15s ease,
+    color 0.15s ease;
+}
+
+.rc-tone-btn.is-active {
+  background: #8b7cf6;
+  color: #fff;
+}
 
 .rc-header {
   display: flex;
@@ -94,7 +128,6 @@
   margin: 0 0 14px;
 }
 
-
 .rc-intro-section {
   margin-bottom: 28px;
 }
@@ -124,7 +157,6 @@
   color: var(--text-muted);
   margin: 0;
 }
-
 
 .rc-recommend-section {
   margin-bottom: 32px;
@@ -170,7 +202,6 @@
   color: var(--text-secondary);
   margin: 0;
 }
-
 
 .rc-templates-subtitle {
   font-size: 12px;
@@ -223,7 +254,6 @@
 .rc-template-btn:hover {
   background: rgba(255, 255, 255, 0.09);
 }
-
 
 @media (min-width: 1024px) {
   .rc-page {
