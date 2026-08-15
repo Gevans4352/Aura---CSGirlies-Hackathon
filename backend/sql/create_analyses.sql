@@ -14,7 +14,5 @@ create policy "own select" on public.analyses for select using (auth.uid() = use
 drop policy if exists "own insert" on public.analyses;
 create policy "own insert" on public.analyses for insert with check (auth.uid() = user_id);
 
--- Tables created via the raw SQL editor don't get privileges granted
--- automatically, so grant the backend's service_role access explicitly.
 grant select, insert, update, delete on public.analyses to service_role;
 grant usage, select on sequence public.analyses_id_seq to service_role;
