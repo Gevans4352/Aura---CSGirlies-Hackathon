@@ -1,0 +1,117 @@
+.mpa-content {
+  --danger: #e5484d;
+  --text-primary: #f5f5fa;
+  --text-secondary: rgba(245, 245, 250, 0.6);
+  --text-muted: rgba(245, 245, 250, 0.4);
+  --accent-purple: #8b6de0;
+  --accent-purple-strong: #7c5cd6;
+  --panel-border: rgba(255, 255, 255, 0.1);
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  color: var(--text-primary);
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", sans-serif;
+}
+
+.mpa-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1.5px solid var(--danger);
+  color: var(--danger);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 14px;
+}
+
+.mpa-title {
+  font-size: 17px;
+  font-weight: 700;
+  margin: 0 0 12px;
+}
+
+.mpa-description {
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin: 0 0 4px;
+}
+
+.mpa-subdescription {
+  font-size: 12px;
+  color: var(--text-muted);
+  line-height: 1.4;
+  margin: 0 0 18px;
+  max-width: 260px;
+}
+
+.mpa-probability {
+  font-size: 40px;
+  font-weight: 700;
+  color: var(--danger);
+  margin: 0;
+  line-height: 1;
+}
+
+.mpa-probability-label {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin: 4px 0 18px;
+}
+
+.mpa-recommendation {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.4;
+  margin: 0 0 20px;
+}
+
+.mpa-btn-primary {
+  width: 100%;
+  height: 48px;
+  border-radius: 12px;
+  border: none;
+  background: linear-gradient(
+    180deg,
+    var(--accent-purple) 0%,
+    var(--accent-purple-strong) 100%
+  );
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    filter 0.15s ease,
+    transform 0.1s ease;
+  margin-bottom: 14px;
+}
+
+.mpa-btn-primary:hover {
+  filter: brightness(1.06);
+}
+
+.mpa-btn-primary:active {
+  transform: scale(0.98);
+}
+
+.mpa-dismiss {
+  background: none;
+  border: none;
+  font-size: 13px;
+  color: var(--text-muted);
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.mpa-dismiss:hover {
+  color: var(--text-secondary);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mpa-btn-primary {
+    transition: none;
+  }
+}
