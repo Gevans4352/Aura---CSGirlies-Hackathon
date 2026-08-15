@@ -64,25 +64,25 @@ A realistic modal notification that triggers during the demo narrative. It state
 ### Recalibration Protocol UI
 Following the alert, a dedicated screen offers a simulated "social low-power mode" protocol, expanded into a **full template library** (see below) rather than a single message.
 
-### Energy Budget Ledger *(New)*
+### Energy Budget Ledger
 Each morning, the user sets their own self-reported capacity on a simple scale (e.g. "3/5 social budget today"). As the day progresses, Aura tracks spend against that budget as a visible, gentle progress bar — not a diagnosis, and not something the system imposes. This puts the user in the driver's seat and gives Aura a real, self-reported baseline to check its own predictions against.
 
 **MVP Implementation:** A slider to set the morning budget, and a progress bar UI that visually depletes as simulated "events" occur through the demo. No backend logic required — state is held client-side for the demo.
 
-### Boundary Templates Library *(New — expands FR5)*
+### Boundary Templates Library 
 Rather than a single scripted decline message, this is a small library of pre-written templates for common situations: rescheduling, shortening a meeting, requesting written follow-up instead of a call, and declining a commitment outright. Each template can be toggled between a blunter or softer tone, so the user always has the right words ready when they don't have the energy to compose them.
 
-**MVP Implementation:** 3–4 static text templates with a tone toggle (blunt/soft). No new logic — just additional copy blocks and a UI toggle.
+**MVP Implementation:** 3–4 static text templates with a tone toggle (blunt/soft). No new logic just additional copy blocks and a UI toggle.
 
-### Quiet / Camouflage Mode *(New)*
+### Quiet / Camouflage Mode 
 A fully silent mode that keeps the underlying tracking active but removes all visible output — no glowing sphere, no alert banners — for users who don't want their coping tool visibly on display in public or at work.
 
 **MVP Implementation:** A CSS class toggle that hides the sphere and alert UI, demonstrated live as a settings switch.
 
-### Post-Event Debrief *(New)*
+### Post-Event Debrief 
 After a flagged high-demand event, Aura asks a simple two-question check-in: "How did that actually go?" This closes the loop between what Aura predicted and what the user actually experienced, building trust in the system's accuracy over time rather than treating every alert as a one-shot, unverified prediction.
 
-**MVP Implementation:** A two-button modal (👍 Went okay / 👎 Went badly) that appears after a simulated flagged event. Fully functional for the demo — no backend needed.
+**MVP Implementation:** A two-button modal ( Went okay /  Went badly) that appears after a simulated flagged event. Fully functional for the demo 
 
 ### Typing Pattern Awareness
 Typing speed, backspacing/editing frequency, and pause patterns while composing a message can reflect cognitive load without ever reading the content of what's typed sidestepping content-privacy concerns entirely while still surfacing something real ("you've been typing much slower and editing more than usual today").
