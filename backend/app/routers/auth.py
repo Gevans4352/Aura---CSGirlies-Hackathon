@@ -1,4 +1,11 @@
-from app.deps import get_access_token, get_admin_client, get_current_user
+import logging
+
+from app.deps import (
+    get_access_token,
+    get_admin_client,
+    get_current_user,
+    get_user_client,
+)
 from app.schemas import AuthOut, LoginIn, RegisterIn, UserOut
 from fastapi import APIRouter, Depends, HTTPException
 from supabase import AuthApiError
@@ -23,7 +30,7 @@ def _auth_out(res) -> AuthOut:
 
 
 @router.post("/register", response_model=AuthOut)
-def register(body: RegisterIn, client=Depends(get_admin_client)):
+def register(body: RegisterIn, client=Depends(get_user_client)):
     try:
         res = client.auth.sign_up(
             {
@@ -42,7 +49,7 @@ def register(body: RegisterIn, client=Depends(get_admin_client)):
 
 
 @router.post("/login", response_model=AuthOut)
-def login(body: LoginIn, client=Depends(get_admin_client)):
+def login(body: LoginIn, client=Depends(get_user_client)):
     try:
         res = client.auth.sign_in_with_password(
             {"email": body.email, "password": body.password}
