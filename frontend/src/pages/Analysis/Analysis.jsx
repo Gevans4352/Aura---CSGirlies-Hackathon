@@ -1,18 +1,9 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import NavBar, { SettingsIcon } from "../../components/NavBar/NavBar";
 import MeltdownProdromeAlert from "../../components/MeltdownProdromeAlert/MeltdownProdromeAlert";
+import VocalAnalysisReveal from "../../components/VocalAnalysisReveal/VocalAnalysisReveal";
+import { setPendingDebrief } from "../../lib/debriefStorage";
 import "../../styles/Analysis.css";
-
-// Static bar-height patterns for the two waveforms. Swap for real
-// amplitude data from the backend once vocal analysis is wired up.
-const BASELINE_BARS = [
-  4, 8, 14, 10, 18, 22, 16, 26, 20, 14, 10, 24, 18, 12, 8, 20, 16, 10, 22, 14,
-  8, 18, 12, 6,
-];
-const ANALYSIS_BARS = [
-  6, 16, 10, 24, 14, 30, 20, 12, 26, 18, 8, 22, 32, 14, 10, 28, 16, 24, 12, 20,
-  8, 26, 14, 6,
-];
 
 const EAL_LEGEND = [
   { range: "80-100%", label: "Authentic", color: "#4ade80" },
@@ -45,19 +36,20 @@ const KEY_INDICATORS = [
 ];
 
 export default function Analysis() {
-  // TODO: replace with a real value from the backend's analyze endpoint
-  const ealPercent = 18;
-  const ealTier = getEalTier(ealPercent);
+  // null = analysis hasn't run yet this visit — the EAL card stays in
+  // a placeholder state until VocalAnalysisReveal reports a result.
+  const [ealPercent, setEalPercent] = useState(null);
+  const [showAlert, setShowAlert] = useState(false);
 
-  // The Meltdown Prodrome Alert fires whenever the backend flags a
-  // high-risk pattern — here that's simplified to "EAL is high risk",
-  // but the real trigger/probability should come from the analyze
-  // endpoint once it exists.
-  const [showAlert, setShowAlert] = useState(ealTier.tone === "danger");
+  const ealTier = ealPercent !== null ? getEalTier(ealPercent) : null;
 
-  useEffect(() => {
-    setShowAlert(ealTier.tone === "danger");
-  }, [ealTier.tone]);
+  const handleAnalysisComplete = (finalEal) => {
+    setEalPercent(finalEal);
+    if (getEalTier(finalEal).tone === "danger") {
+      setShowAlert(true);
+      setPendingDebrief("your last vocal analysis");
+    }
+  };
 
   return (
     <div className="an-page">
@@ -88,20 +80,18 @@ export default function Analysis() {
               See how Aura detects changes from your natural baseline.
             </p>
 
-            <div className="an-waveform-grid">
-              <Waveform
-                bars={BASELINE_BARS}
-                color="#6f8dff"
-                label="Baseline captured"
-                dotColor="#6f8dff"
-              />
-              <Waveform
-                bars={ANALYSIS_BARS}
-                color="#e5484d"
-                label="Analysis complete"
-                dotColor="#e5484d"
-              />
-            </div>
+            {/*
+              Swap audioSrc for a real calm-voice clip once you have one,
+              e.g. "/audio/baseline-sample.mp3". With no audioSrc it falls
+              back to a synthetic calm sway, so this still demos fine
+              without a real recording.
+            */}
+            <VocalAnalysisReveal
+              audioSrc={null}
+              durationMs={6500}
+              targetEal={18}
+              onComplete={handleAnalysisComplete}
+            />
           </section>
 
           <section className="an-eal-section">
@@ -113,45 +103,51 @@ export default function Analysis() {
                 <span className="an-badge">SIMULATED</span>
               </div>
 
-              <div className="an-eal-content">
-                <div className="an-eal-readout">
-                  <p
-                    className={`an-eal-percent an-eal-percent-${ealTier.tone}`}
-                  >
-                    {ealPercent}%<span className="an-eal-cursor">_</span>
-                  </p>
-                  <p className={`an-eal-tier an-eal-tier-${ealTier.tone}`}>
-                    {ealTier.label}
-                  </p>
-                </div>
+              {ealTier ? (
+                <div className="an-eal-content">
+                  <div className="an-eal-readout">
+                    <p
+                      className={`an-eal-percent an-eal-percent-${ealTier.tone}`}
+                    >
+                      {ealPercent}%<span className="an-eal-cursor">_</span>
+                    </p>
+                    <p className={`an-eal-tier an-eal-tier-${ealTier.tone}`}>
+                      {ealTier.label}
+                    </p>
+                  </div>
 
-                <div className="an-eal-detail">
-                  <p className="an-eal-description">
-                    Your current response shows low alignment with your baseline
-                    emotional pattern.
-                  </p>
-                  <ul className="an-eal-legend">
-                    {EAL_LEGEND.map((item) => (
-                      <li key={item.range}>
-                        <span
-                          className="an-eal-legend-dot"
-                          style={{ background: item.color }}
-                          aria-hidden="true"
-                        />
-                        <span className="an-eal-legend-range">
-                          {item.range}
-                        </span>
-                        <span
-                          className="an-eal-legend-label"
-                          style={{ color: item.color }}
-                        >
-                          {item.label}
-                        </span>
-                      </li>
-                    ))}
-                  </ul>
+                  <div className="an-eal-detail">
+                    <p className="an-eal-description">
+                      Your current response shows low alignment with your
+                      baseline emotional pattern.
+                    </p>
+                    <ul className="an-eal-legend">
+                      {EAL_LEGEND.map((item) => (
+                        <li key={item.range}>
+                          <span
+                            className="an-eal-legend-dot"
+                            style={{ background: item.color }}
+                            aria-hidden="true"
+                          />
+                          <span className="an-eal-legend-range">
+                            {item.range}
+                          </span>
+                          <span
+                            className="an-eal-legend-label"
+                            style={{ color: item.color }}
+                          >
+                            {item.label}
+                          </span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
                 </div>
-              </div>
+              ) : (
+                <p className="an-eal-empty">
+                  Run vocal analysis above to see your score.
+                </p>
+              )}
             </div>
           </section>
 
@@ -192,30 +188,6 @@ export default function Analysis() {
           </section>
         </div>
       </div>
-    </div>
-  );
-}
-
-function Waveform({ bars, color, label, dotColor }) {
-  return (
-    <div className="an-waveform-card">
-      <div className="an-waveform-bars" aria-hidden="true">
-        {bars.map((height, i) => (
-          <span
-            key={i}
-            className="an-waveform-bar"
-            style={{ height: `${height}px`, background: color }}
-          />
-        ))}
-      </div>
-      <p className="an-waveform-label">
-        <span
-          className="an-waveform-dot"
-          style={{ background: dotColor }}
-          aria-hidden="true"
-        />
-        {label}
-      </p>
     </div>
   );
 }
