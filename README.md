@@ -53,7 +53,7 @@ Aura differs from existing mental health applications and voice-biomarker platfo
 The main dashboard features an abstract, glowing sphere that represents the user's current state. It animates between three distinct conditions: Stable (slow-pulsing deep blue), Strained (frantic amber-red), and Fractured (chaotic pulsing red alert). This provides an immediate, intuitive read on the user's nervous system load without requiring numerical analysis.
 
 ### Vocal Analysis Demo (The Lie Detector)
-This is the shock-factor feature. It presents two side-by-side visualizations. The first plays a calm audio waveform of a person saying they are fine. The second displays a simultaneous, chaotic visualization labeled "Aura Output" with the alert "Masking Fracture Detected. Emotional Allostatic Load: 94." This feature starkly illustrates the gap between spoken words and nervous system reality.
+This is the shock-factor feature. It presents two side-by-side visualizations. The first plays a calm audio waveform of a person saying they are fine. The second displays a simultaneous, chaotic visualization labeled "Aura Output" with the alert "Masking Fracture Detected. Emotional Authenticity Level: 18%." This feature starkly illustrates the gap between spoken words and nervous system reality.
 
 ### Anomaly Event Simulation and Timeline
 A pre-populated dashboard timeline shows simulated historical events for a demo character. Examples include "Strain spike detected during Performance Review call" and "Masking fracture detected during Call with Mom." This timeline demonstrates how Aura would track and contextualize strain over time.
@@ -138,8 +138,8 @@ The UX is designed around a three-act narrative: Calm, Crisis, and Rescue. Every
 The architecture for the hackathon MVP is intentionally lightweight to fit the 3-day sprint, focusing on UI fidelity and a convincing narrative flow.
 
 - **Frontend (React, Three.js/React Three Fiber, Framer Motion):** Handles UI rendering, Aura Sphere animations, audio playback, authentication, onboarding, consent/session controls, accessibility, and user interactions. Communicates with the backend for simulated score retrieval.
-- **Backend (Python FastAPI):** Provides Supabase-backed authentication (`/api/v1/auth`) and the vocal analysis endpoint (`POST /api/v1/analyze`). The analysis endpoint accepts a dummy file upload (ignored) and immediately returns a pre-configured JSON payload, demonstrating the technical scaffolding for a future real analysis pipeline.
-- **Data Layer:** Onboarding responses are persisted in the `profiles` table. All other data is not persisted for the MVP. Data relating to the timeline, scores, energy budget, and alerts is hard-coded or held in client-side state, reset on refresh.
+- **Backend (Python FastAPI):** Provides Supabase-backed authentication (`/api/v1/auth`) and the vocal analysis endpoints (`POST /api/v1/analyze`, `GET /api/v1/analysis/latest`). The analysis endpoint accepts a dummy file upload (ignored), immediately returns a pre-configured JSON payload, and persists the result per user, demonstrating the technical scaffolding for a future real analysis pipeline.
+- **Data Layer:** Onboarding responses are persisted in the `profiles` table and vocal analysis results in the `analyses` table. All other data is not persisted for the MVP. Data relating to the timeline, energy budget, and alerts is hard-coded or held in client-side state, reset on refresh.
 - **AI/ML Simulation:** Not running in real-time. Offline Python scripts using Librosa and Matplotlib generated the spectral centroid graphs, jitter visualizations, and the chaotic "nervous system output" audio track for the demo assets. Typing-pattern and calendar-awareness insights are similarly canned for the demo.
 
 ## Technical Implementation
@@ -154,13 +154,13 @@ Implemented in Python with FastAPI, chosen for simplicity, speed, and automatic 
 
 ```json
 {
-  "emotional_allostatic_load": 94,
+  "emotional_allostatic_load": 18,
   "masking_strain_index": 87,
   "timestamp": "2026-07-03T14:00:00Z"
 }
 ```
 
-This validates that the frontend/backend integration functions correctly, proving the system could ingest real data in a future iteration.
+This validates that the frontend/backend integration functions correctly, proving the system could ingest real data in a future iteration. Each call also stores a row in the `analyses` table, so the frontend can fetch the latest score afterwards.
 
 ### AI/ML (Simulation Strategy)
 For the hackathon, the AI/ML role focused on asset generation rather than real-time inference. Librosa was used offline to extract spectral centroid and jitter features from a real voice sample, visualized with Matplotlib for the pitch deck. A secondary "nervous system output" audio track was created by applying distortion and spectral shift effects to the calm voice track.
@@ -302,7 +302,8 @@ npm run build
 | POST | `/api/v1/auth/logout` | Ends the current session | Bearer token |
 | POST | `/api/v1/auth/refresh` | Rotates the access token. Body: `{refresh_token}` | None |
 | GET | `/api/v1/health` | Health check | None |
-| POST | `/api/v1/analyze` | Simulated vocal analysis. Returns a pre-calculated stress score. | None |
+| POST | `/api/v1/analyze` | Simulated vocal analysis. Persists the result and returns a pre-calculated stress score. | Bearer token |
+| GET | `/api/v1/analysis/latest` | Returns the authenticated user's most recent vocal analysis | Bearer token |
 | GET | `/api/v1/onboarding` | Returns the authenticated user's onboarding profile and derived baseline | Bearer token |
 | POST | `/api/v1/onboarding` | Saves onboarding answers and derives baseline MSI. `Body: {answers: {...}, quiet_mode_default?: boolean}` | Bearer token |
 
@@ -327,7 +328,7 @@ npm run build
 **Response (200 OK):**
 ```json
 {
-  "emotional_allostatic_load": 94,
+  "emotional_allostatic_load": 18,
   "masking_strain_index": 87,
   "timestamp": "2026-07-03T14:00:00Z"
 }

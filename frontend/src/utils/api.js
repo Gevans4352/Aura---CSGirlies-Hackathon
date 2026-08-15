@@ -12,43 +12,64 @@ export const auth = {
   },
 };
 
-async function refreshSession() {
+let refreshPromise = null;
+
+function refreshSession() {
+  if (refreshPromise) return refreshPromise;
+
   const refreshToken = auth.getRefreshToken();
-  if (!refreshToken) return false;
+  if (!refreshToken) {
+    refreshPromise = Promise.resolve(false);
+  } else {
+    refreshPromise = fetch(
+      `${import.meta.env.VITE_API_URL}/api/v1/auth/refresh`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ refresh_token: refreshToken }),
+      },
+    )
+      .then(async (res) => {
+        if (!res.ok) {
+          console.warn("Token refresh failed:", res.status);
+          return false;
+        }
+        const data = await res.json();
+        auth.setToken(data.access_token);
+        auth.setRefreshToken(data.refresh_token);
+        return true;
+      })
+      .catch(() => false);
+  }
 
-  const res = await fetch(
-    `${import.meta.env.VITE_API_URL}/api/v1/auth/refresh`,
-    {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ refresh_token: refreshToken }),
-    },
-  );
-  if (!res.ok) return false;
+  refreshPromise.finally(() => {
+    refreshPromise = null;
+  });
 
-  const data = await res.json();
-  auth.setToken(data.access_token);
-  auth.setRefreshToken(data.refresh_token);
-  return true;
+  return refreshPromise;
 }
 
 export async function api(path, { method = "GET", body } = {}) {
+  const isFormData = typeof FormData !== "undefined" && body instanceof FormData;
+
   const request = () => {
-    const headers = { "Content-Type": "application/json" };
+    const headers = {};
     const token = auth.getToken();
     if (token) headers.Authorization = `Bearer ${token}`;
+    if (!isFormData) headers["Content-Type"] = "application/json";
 
     return fetch(`${import.meta.env.VITE_API_URL}${path}`, {
       method,
       headers,
-      body: body ? JSON.stringify(body) : undefined,
+      body: isFormData ? body : body ? JSON.stringify(body) : undefined,
     });
   };
 
   let res = await request();
 
   if (res.status === 401) {
-    if (await refreshSession()) {
+    const canRefresh = Boolean(auth.getToken() && auth.getRefreshToken());
+    if (canRefresh && (await refreshSession())) {
       res = await request();
     } else {
       auth.clearToken();
@@ -61,5 +82,6 @@ export async function api(path, { method = "GET", body } = {}) {
     const data = await res.json().catch(() => ({}));
     throw new Error(data.detail || `Error ${res.status}`);
   }
+  if (res.status === 204) return null;
   return res.json();
 }
