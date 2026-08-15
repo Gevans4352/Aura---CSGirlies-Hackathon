@@ -139,7 +139,7 @@ The architecture for the hackathon MVP is intentionally lightweight to fit the 3
 
 - **Frontend (React, Three.js/React Three Fiber, Framer Motion):** Handles UI rendering, Aura Sphere animations, audio playback, authentication, onboarding, consent/session controls, accessibility, and user interactions. Communicates with the backend for simulated score retrieval.
 - **Backend (Python FastAPI):** Provides Supabase-backed authentication (`/api/v1/auth`) and the vocal analysis endpoint (`POST /api/v1/analyze`). The analysis endpoint accepts a dummy file upload (ignored) and immediately returns a pre-configured JSON payload, demonstrating the technical scaffolding for a future real analysis pipeline.
-- **Data Layer:** No persistent database in the MVP. All data for the timeline, scores, energy budget, and alerts is hard-coded or held in client-side state, reset on refresh.
+- **Data Layer:** Onboarding responses are persisted in the `profiles` table. All other data is not persisted for the MVP. Data relating to the timeline, scores, energy budget, and alerts is hard-coded or held in client-side state, reset on refresh.
 - **AI/ML Simulation:** Not running in real-time. Offline Python scripts using Librosa and Matplotlib generated the spectral centroid graphs, jitter visualizations, and the chaotic "nervous system output" audio track for the demo assets. Typing-pattern and calendar-awareness insights are similarly canned for the demo.
 
 ## Technical Implementation
@@ -301,7 +301,9 @@ npm run build
 | GET | `/api/v1/auth/me` | Returns the current authenticated user | Bearer token |
 | POST | `/api/v1/auth/logout` | Ends the current session | Bearer token |
 | GET | `/api/v1/health` | Health check | None |
-| POST | `/api/v1/analyze` | *Pending:* simulated vocal analysis. Returns a pre-calculated stress score. | None |
+| POST | `/api/v1/analyze` | Simulated vocal analysis. Returns a pre-calculated stress score. | None |
+| GET | `/api/v1/onboarding` | Returns the authenticated user's onboarding profile and derived baseline | Bearer token |
+| POST | `/api/v1/onboarding` | Saves onboarding answers and derives baseline MSI. Body: `{answers: {...}}` | Bearer token |
 
 **Auth Response (200 OK):** `register` and `login` return session tokens:
 
@@ -317,7 +319,7 @@ npm run build
 }
 ```
 
-**Analyze Request (Pending):**
+**Analyze Request:** The endpoint returns `500 {"detail": "Analysis service unavailable"}` when the backend runs with `ANALYZE_ENABLED=false`.
 
 **Request Body:** Form-data with a `file` field (optional, ignored).
 
@@ -342,12 +344,13 @@ npm run build
 aura/
 ├── backend/
 │   ├── requirements.txt        # Python dependencies
+│   ├── sql/                    # profiles table migration.
 │   └── app/
 │       ├── main.py             # FastAPI app, CORS, routers
 │       ├── core/config.py      # Settings from .env
 │       ├── deps.py             # Supabase clients + JWT validation
 │       ├── schemas.py          # Pydantic models
-│       └── routers/            # auth, health, analyze (pending), onboarding (pending)
+│       └── routers/            # auth, health, analyze, onboarding
 ├── frontend/
 │   ├── public/
 │   │   └── audio/                 # Pre-recorded demo audio
