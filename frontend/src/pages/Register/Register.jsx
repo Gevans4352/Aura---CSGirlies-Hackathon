@@ -28,6 +28,7 @@ const Register = () => {
         body: { name, email, password },
       });
       auth.setToken(data.access_token);
+      auth.setRefreshToken(data.refresh_token);
       navigate("/onboarding");
     } catch (err) {
       setError(err.message);

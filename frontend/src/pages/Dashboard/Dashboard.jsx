@@ -4,10 +4,12 @@ import { motion, animate } from "framer-motion";
 import NavBar, { SettingsIcon } from "../../components/NavBar/NavBar";
 import AmbientQuote from "../../components/AmbientQuote/AmbientQuote";
 import PostEventDebrief from "../../components/PostEventDebrief/PostEventDebrief";
+import CalendarLoadModal from "../../components/CalendarLoadModal/CalendarLoadModal";
 import {
   getPendingDebrief,
   clearPendingDebrief,
 } from "../../lib/debriefStorage";
+import { api } from "../../utils/api";
 import "../../styles/Dashboard.css";
 
 const INSIGHTS = [
@@ -23,6 +25,14 @@ const INSIGHTS = [
     title: "Typing pattern",
     description: "Increased hesitation detected during your last session.",
     badge: "SIMULATED",
+  },
+  {
+    id: "calendar_load",
+    icon: <CalendarIcon />,
+    title: "Calendar load",
+    description: "Reviewing today's schedule for social density.",
+    badge: "SIMULATED",
+    modal: "calendar_load",
   },
 ];
 
@@ -68,23 +78,30 @@ export default function Dashboard() {
   const [spent, setSpent] = useState(() =>
     Math.round(62 * getElapsedDayFraction() * PASSIVE_DRAIN_CEILING),
   );
-  const [showDebrief, setShowDebrief] = useState(false);
-  const [debriefEventLabel, setDebriefEventLabel] = useState("tonight's call");
-
+  const [showCalendarLoad, setShowCalendarLoad] = useState(false);
   // Real trigger: if something flagged a debrief before the person
   // left (possibly on a totally different day), it's waiting here.
-  useEffect(() => {
-    const pending = getPendingDebrief();
-    if (pending) {
-      setDebriefEventLabel(pending.eventLabel);
-      setShowDebrief(true);
-    }
-  }, []);
-
-  // TODO: replace with real values from the backend once wired up
-  const eal = 12;
+  const [pendingDebrief] = useState(() => getPendingDebrief());
+  const [debriefEventLabel, setDebriefEventLabel] = useState(
+    () => pendingDebrief?.eventLabel ?? "tonight's call",
+  );
+  const [showDebrief, setShowDebrief] = useState(() => pendingDebrief !== null);
+  // Real value: latest vocal analysis from the backend ...
+  const [eal, setEal] = useState(0);
   const ealMax = 100;
   const energyMax = 100;
+
+  useEffect(() => {
+    let active = true;
+    api("/api/v1/analysis/latest")
+      .then((data) => {
+        if (active) setEal(data.emotional_allostatic_load);
+      })
+      .catch(() => {});
+    return () => {
+      active = false;
+    };
+  }, []);
 
   // Keeps the passive drain moving forward with the real clock while
   // the dashboard is open, without ever walking spent backwards.
@@ -109,6 +126,12 @@ export default function Dashboard() {
   const handleStartSession = () => {
     setSpent((current) => Math.min(current + SESSION_COST, energyBudget));
     navigate("/session");
+  };
+
+  const handleInsightClick = (insight) => {
+    if (insight.modal === "calendar_load") {
+      setShowCalendarLoad(true);
+    }
   };
 
   return (
@@ -219,29 +242,52 @@ export default function Dashboard() {
               Today&apos;s Insights
             </motion.h2>
             <div className="dash-insights-list">
-              {INSIGHTS.map((insight) => (
-                <motion.div
-                  key={insight.id}
-                  className="dash-insight-card"
-                  variants={item}
-                  whileHover={{ y: -3, transition: { duration: 0.15 } }}
-                >
-                  <div className="dash-insight-icon">{insight.icon}</div>
-                  <div className="dash-insight-body">
-                    <div className="dash-insight-title-row">
-                      <p className="dash-insight-title">{insight.title}</p>
-                      {insight.badge && (
-                        <span className="dash-insight-badge">
-                          {insight.badge}
-                        </span>
-                      )}
+              {INSIGHTS.map((insight) => {
+                const isClickable = Boolean(insight.modal);
+
+                return (
+                  <motion.div
+                    key={insight.id}
+                    className={`dash-insight-card ${
+                      isClickable ? "dash-insight-card-clickable" : ""
+                    }`}
+                    variants={item}
+                    whileHover={{ y: -3, transition: { duration: 0.15 } }}
+                    role={isClickable ? "button" : undefined}
+                    tabIndex={isClickable ? 0 : undefined}
+                    onClick={
+                      isClickable
+                        ? () => handleInsightClick(insight)
+                        : undefined
+                    }
+                    onKeyDown={
+                      isClickable
+                        ? (e) => {
+                            if (e.key === "Enter" || e.key === " ") {
+                              e.preventDefault();
+                              handleInsightClick(insight);
+                            }
+                          }
+                        : undefined
+                    }
+                  >
+                    <div className="dash-insight-icon">{insight.icon}</div>
+                    <div className="dash-insight-body">
+                      <div className="dash-insight-title-row">
+                        <p className="dash-insight-title">{insight.title}</p>
+                        {insight.badge && (
+                          <span className="dash-insight-badge">
+                            {insight.badge}
+                          </span>
+                        )}
+                      </div>
+                      <p className="dash-insight-description">
+                        {insight.description}
+                      </p>
                     </div>
-                    <p className="dash-insight-description">
-                      {insight.description}
-                    </p>
-                  </div>
-                </motion.div>
-              ))}
+                  </motion.div>
+                );
+              })}
             </div>
 
             <AmbientQuote />
@@ -276,10 +322,14 @@ export default function Dashboard() {
           console.log("Debrief outcome:", outcome);
         }}
       />
+
+      <CalendarLoadModal
+        isOpen={showCalendarLoad}
+        onClose={() => setShowCalendarLoad(false)}
+      />
     </div>
   );
 }
-
 
 function AnimatedNumber({ value, duration = 1.1 }) {
   const [display, setDisplay] = useState(0);
@@ -297,11 +347,44 @@ function AnimatedNumber({ value, duration = 1.1 }) {
   return <>{display}</>;
 }
 
-
 function DotIcon({ color }) {
   return (
     <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true">
       <circle cx="9" cy="9" r="7" fill={color} />
+    </svg>
+  );
+}
+
+function CalendarIcon() {
+  return (
+    <svg
+      width="18"
+      height="18"
+      viewBox="0 0 24 24"
+      fill="none"
+      aria-hidden="true"
+    >
+      <rect
+        x="3"
+        y="5"
+        width="18"
+        height="16"
+        rx="2"
+        stroke="currentColor"
+        strokeWidth="1.6"
+      />
+      <path
+        d="M3 9.5h18M8 3v3.5M16 3v3.5"
+        stroke="currentColor"
+        strokeWidth="1.6"
+        strokeLinecap="round"
+      />
+      <path
+        d="M7.5 13.5h.01M12 13.5h.01M16.5 13.5h.01M7.5 17h.01M12 17h.01"
+        stroke="currentColor"
+        strokeWidth="1.8"
+        strokeLinecap="round"
+      />
     </svg>
   );
 }

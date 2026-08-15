@@ -1,7 +1,13 @@
 import { useEffect } from "react";
 import "../../styles/Modal.css";
 
-export default function Modal({ isOpen, onClose, children, labelledBy }) {
+export default function Modal({
+  isOpen,
+  onClose,
+  children,
+  labelledBy,
+  className = "",
+}) {
   useEffect(() => {
     if (!isOpen) return;
     const handleKey = (e) => {
@@ -16,7 +22,7 @@ export default function Modal({ isOpen, onClose, children, labelledBy }) {
   return (
     <div className="modal-backdrop" onClick={onClose} role="presentation">
       <div
-        className="modal-card"
+        className={`modal-card ${className}`.trim()}
         role="dialog"
         aria-modal="true"
         aria-labelledby={labelledBy}

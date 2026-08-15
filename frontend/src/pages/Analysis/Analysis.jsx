@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import NavBar, { SettingsIcon } from "../../components/NavBar/NavBar";
 import MeltdownProdromeAlert from "../../components/MeltdownProdromeAlert/MeltdownProdromeAlert";
 import VocalAnalysisReveal from "../../components/VocalAnalysisReveal/VocalAnalysisReveal";
 import { setPendingDebrief } from "../../lib/debriefStorage";
+import { api } from "../../utils/api";
 import "../../styles/Analysis.css";
 
 const EAL_LEGEND = [
@@ -40,6 +41,19 @@ export default function Analysis() {
   // a placeholder state until VocalAnalysisReveal reports a result.
   const [ealPercent, setEalPercent] = useState(null);
   const [showAlert, setShowAlert] = useState(false);
+  const [targetEal, setTargetEal] = useState(18);
+
+  useEffect(() => {
+    let active = true;
+    api("/api/v1/analyze", { method: "POST", body: new FormData() })
+      .then((data) => {
+        if (active) setTargetEal(data.emotional_allostatic_load);
+      })
+      .catch(() => {});
+    return () => {
+      active = false;
+    };
+  }, []);
 
   const ealTier = ealPercent !== null ? getEalTier(ealPercent) : null;
 
@@ -89,7 +103,7 @@ export default function Analysis() {
             <VocalAnalysisReveal
               audioSrc={null}
               durationMs={6500}
-              targetEal={18}
+              targetEal={targetEal}
               onComplete={handleAnalysisComplete}
             />
           </section>
@@ -100,7 +114,6 @@ export default function Analysis() {
                 <h2 className="an-eal-title">
                   Emotional Authenticity Level (EAL)
                 </h2>
-                <span className="an-badge">SIMULATED</span>
               </div>
 
               {ealTier ? (

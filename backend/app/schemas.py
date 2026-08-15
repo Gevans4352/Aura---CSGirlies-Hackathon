@@ -34,6 +34,10 @@ class AuthOut(BaseModel):
     user: UserOut
 
 
+class RefreshIn(BaseModel):
+    refresh_token: str
+
+
 class OnboardingIn(BaseModel):
     answers: dict[str, str]
     quiet_mode_default: bool = False
@@ -59,6 +63,7 @@ class OnboardingOut(BaseModel):
     answers: dict[str, str]
     baseline_msi: float | None = None
     dashboard_priority: str | None = None
+    quiet_mode_default: bool = False
     created_at: datetime
 
 

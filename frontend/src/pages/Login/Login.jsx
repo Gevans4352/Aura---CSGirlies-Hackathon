@@ -27,6 +27,7 @@ const Login = () => {
         body: { email, password },
       });
       auth.setToken(data.access_token);
+      auth.setRefreshToken(data.refresh_token);
       navigate("/onboarding");
     } catch (err) {
       setError(err.message);
@@ -44,14 +45,24 @@ const Login = () => {
     if (error) setError(error.message);
   };
   useEffect(() => {
+    const oauthRedirect =
+      window.location.search.includes("code=") ||
+      window.location.hash.includes("access_token") ||
+      window.location.hash.includes("error");
+
+    if (!oauthRedirect) return undefined;
+
     const recoverSession = async () => {
       const { data } = await supabase.auth.getSession();
       if (data.session) {
         auth.setToken(data.session.access_token);
+        auth.setRefreshToken(data.session.refresh_token);
+        window.history.replaceState({}, "", "/login");
         navigate("/onboarding");
       }
     };
     recoverSession();
+    return undefined;
   }, [navigate]);
 
   return (
