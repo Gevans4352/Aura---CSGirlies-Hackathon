@@ -1,0 +1,75 @@
+.slc-content {
+  --text-primary: #f5f5fa;
+  --text-secondary: rgba(245, 245, 250, 0.6);
+  --text-muted: rgba(245, 245, 250, 0.4);
+  --accent-purple: #8b6de0;
+  --accent-purple-strong: #7c5cd6;
+  --danger: #e5484d;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  color: var(--text-primary);
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", sans-serif;
+}
+
+
+
+.slc-title {
+  font-size: 18px;
+  font-weight: 700;
+  margin: 0 0 10px;
+}
+
+.slc-description {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.4;
+  margin: 0 0 16px;
+}
+
+.slc-countdown {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin: 0 0 22px;
+}
+
+.slc-countdown span {
+  color: var(--danger);
+  font-weight: 700;
+}
+
+.slc-btn-primary {
+  width: 100%;
+  height: 48px;
+  border-radius: 12px;
+  border: none;
+  background: linear-gradient(
+    180deg,
+    var(--accent-purple) 0%,
+    var(--accent-purple-strong) 100%
+  );
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    filter 0.15s ease,
+    transform 0.1s ease;
+}
+
+.slc-btn-primary:hover {
+  filter: brightness(1.06);
+}
+
+.slc-btn-primary:active {
+  transform: scale(0.98);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .slc-btn-primary {
+    transition: none;
+  }
+}
