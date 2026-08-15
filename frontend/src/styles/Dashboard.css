@@ -16,7 +16,8 @@
   flex-direction: column;
   background: linear-gradient(180deg, var(--bg-top) 0%, var(--bg-bottom) 100%);
   color: var(--text-primary);
-  font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", sans-serif;
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", sans-serif;
 }
 
 /* ---------- Header ---------- */
@@ -56,7 +57,9 @@
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: background 0.15s ease, color 0.15s ease;
+  transition:
+    background 0.15s ease,
+    color 0.15s ease;
 }
 
 .dash-icon-btn:hover {
@@ -75,6 +78,72 @@
   font-weight: 700;
   margin: 0 0 4px;
 }
+.dash-energy-remaining {
+  margin-top: 16px;
+}
+
+.dash-energy-remaining-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+.dash-energy-remaining-label {
+  font-size: 12px;
+  color: #9d97b3;
+  margin: 0;
+}
+
+.dash-energy-remaining-value {
+  font-size: 12.5px;
+  font-weight: 600;
+  margin: 0;
+  font-variant-numeric: tabular-nums;
+}
+
+.dash-energy-remaining-value-good {
+  color: #4ade80;
+}
+.dash-energy-remaining-value-warn {
+  color: #f5a623;
+}
+.dash-energy-remaining-value-danger {
+  color: #e5484d;
+}
+
+.dash-energy-track {
+  height: 6px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.08);
+  overflow: hidden;
+}
+.dash-debrief-demo-btn {
+  margin-top: 8px;
+  background: transparent;
+  border: 1px dashed rgba(255, 255, 255, 0.2);
+  color: #9d97b3;
+  font-size: 12px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  cursor: pointer;
+  align-self: flex-start;
+}
+
+.dash-energy-fill {
+  height: 100%;
+  border-radius: 6px;
+}
+
+.dash-energy-fill-good {
+  background: #4ade80;
+}
+.dash-energy-fill-warn {
+  background: #f5a623;
+}
+.dash-energy-fill-danger {
+  background: #e5484d;
+}
 
 .dash-status-subtitle {
   font-size: 13px;
@@ -86,13 +155,18 @@
   display: flex;
   justify-content: center;
   margin-bottom: 28px;
+  cursor: pointer;
 }
 
 .dash-sphere {
   width: clamp(160px, 48vw, 210px);
   height: clamp(160px, 48vw, 210px);
   border-radius: 50%;
-  background: radial-gradient(circle at 35% 30%, var(--sphere-core), var(--sphere-edge) 70%);
+  background: radial-gradient(
+    circle at 35% 30%,
+    var(--sphere-core),
+    var(--sphere-edge) 70%
+  );
   box-shadow: 0 0 90px 10px rgba(74, 129, 226, 0.35);
   animation: dash-breathe 4.5s ease-in-out infinite;
 }
@@ -198,12 +272,18 @@
   height: 52px;
   border-radius: 14px;
   border: none;
-  background: linear-gradient(180deg, var(--accent-purple) 0%, var(--accent-purple-strong) 100%);
+  background: linear-gradient(
+    180deg,
+    var(--accent-purple) 0%,
+    var(--accent-purple-strong) 100%
+  );
   color: #fff;
   font-size: 15px;
   font-weight: 600;
   cursor: pointer;
-  transition: filter 0.15s ease, transform 0.1s ease;
+  transition:
+    filter 0.15s ease,
+    transform 0.1s ease;
   margin-bottom: 32px;
 }
 
@@ -322,12 +402,32 @@
 
   .dash-insights-col {
     padding-top: 4px;
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
   }
 
   .dash-insights-list {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    display: flex;
+    flex-direction: column;
     gap: 14px;
+  }
+
+  .dash-insight-card {
+    padding: 20px 22px;
+  }
+
+  .dash-insight-icon {
+    width: 38px;
+    height: 38px;
+  }
+
+  .dash-insight-title {
+    font-size: 15px;
+  }
+
+  .dash-insight-description {
+    font-size: 14px;
   }
 }
 
