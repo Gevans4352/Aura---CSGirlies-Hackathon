@@ -1,5 +1,8 @@
 import { useState } from "react";
-import "../../styles/register.css";
+import { useNavigate } from "react-router-dom";
+import { api, auth } from "../../utils/api";
+import { supabase } from "../../lib/supabase";
+import "../../styles/Register.css";
 
 const Register = () => {
   const [name, setName] = useState("");
@@ -7,6 +10,7 @@ const Register = () => {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -19,17 +23,26 @@ const Register = () => {
 
     setLoading(true);
     try {
-      // TODO: replace with real sign-up call, e.g. authClient.signUp({ name, email, password })
-      await new Promise((resolve) => setTimeout(resolve, 800));
+      const data = await api("/api/v1/auth/register", {
+        method: "POST",
+        body: { name, email, password },
+      });
+      auth.setToken(data.access_token);
+      navigate("/onboarding");
     } catch (err) {
-      setError("Couldn't create your account. Please try again.");
+      setError(err.message);
     } finally {
       setLoading(false);
     }
   };
 
-  const handleGoogleSignUp = () => {
-    // TODO: wire up Google OAuth
+  const handleGoogleSignUp = async () => {
+    setError("");
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: "google",
+      options: { redirectTo: window.location.origin + "/login" },
+    });
+    if (error) setError(error.message);
   };
 
   return (
@@ -119,9 +132,9 @@ const Register = () => {
       </div>
     </div>
   );
-}
+};
 
-export default Register 
+export default Register;
 
 function GoogleIcon() {
   return (
