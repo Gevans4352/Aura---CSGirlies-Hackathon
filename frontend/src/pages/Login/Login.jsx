@@ -27,6 +27,7 @@ const Login = () => {
         body: { email, password },
       });
       auth.setToken(data.access_token);
+      auth.setRefreshToken(data.refresh_token);
       navigate("/onboarding");
     } catch (err) {
       setError(err.message);
@@ -48,6 +49,7 @@ const Login = () => {
       const { data } = await supabase.auth.getSession();
       if (data.session) {
         auth.setToken(data.session.access_token);
+        auth.setRefreshToken(data.session.refresh_token);
         navigate("/onboarding");
       }
     };
