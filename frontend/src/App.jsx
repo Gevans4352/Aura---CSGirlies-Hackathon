@@ -8,6 +8,10 @@ import Dashboard from "./pages/Dashboard/Dashboard";
 import Timeline from "./pages/Timeline/Timeline";
 import Analysis from "./pages/Analysis/Analysis";
 import Recalibration from "./pages/Recalibration/Recalibration";
+import Settings from "./pages/Settings/Settings";
+import Session from "./pages/Session/Session";
+import NotFound from "./pages/NotFound/NotFound";
+
 function App() {
   return (
     <BrowserRouter>
@@ -19,10 +23,10 @@ function App() {
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/timeline" element={<Timeline />} />
         <Route path="/analysis" element={<Analysis />} />
-        <Route path="/recalibration" element={<Recalibration />} />
-
-
-        <Route path="*" element={<Navigate to="/" replace />} />
+        <Route path="/protocol" element={<Recalibration />} />
+        <Route path="/settings" element={<Settings />} />
+        <Route path="/session" element={<Session />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
   );
