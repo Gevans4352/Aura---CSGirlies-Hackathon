@@ -6,17 +6,20 @@ from supabase import Client
 router = APIRouter(prefix="/api/v1/onboarding", tags=["onboarding"])
 
 
+MIN_MSI = 0
+MAX_MSI = 100
+BASELINE_MSI = 30
+SOCIAL_DRAIN_MSI = {"C": 15, "D": 30}
+CALL_TIME_MSI = {"C": 10, "D": 20}
+
+
 def _derive_msi(answers: dict[str, str]) -> int:
-    msi = 30
-    if answers.get("social_drain") == "C":
-        msi += 15
-    elif answers.get("social_drain") == "D":
-        msi += 30
-    if answers.get("call_time") == "C":
-        msi += 10
-    elif answers.get("call_time") == "D":
-        msi += 20
-    return max(0, min(100, msi))
+    msi = (
+        BASELINE_MSI
+        + SOCIAL_DRAIN_MSI.get(answers.get("social_drain"), 0)
+        + CALL_TIME_MSI.get(answers.get("call_time"), 0)
+    )
+    return max(MIN_MSI, min(MAX_MSI, msi))
 
 
 def _derive_priority(answers: dict[str, str]) -> str:
