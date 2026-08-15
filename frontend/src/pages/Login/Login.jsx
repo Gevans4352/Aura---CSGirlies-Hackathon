@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { api, auth } from "../../utils/api";
+import { supabase } from "../../lib/supabase";
 import "../../styles/Login.css";
 
 const Login = () => {
@@ -34,9 +35,24 @@ const Login = () => {
     }
   };
 
-  const handleGoogleSignIn = () => {
-    // TODO: wire up Google OAuth
+  const handleGoogleSignIn = async () => {
+    setError("");
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: "google",
+      options: { redirectTo: window.location.origin + "/login" },
+    });
+    if (error) setError(error.message);
   };
+  useEffect(() => {
+    const recoverSession = async () => {
+      const { data } = await supabase.auth.getSession();
+      if (data.session) {
+        auth.setToken(data.session.access_token);
+        navigate("/onboarding");
+      }
+    };
+    recoverSession();
+  }, [navigate]);
 
   return (
     <div className="login-page">
