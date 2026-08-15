@@ -1,0 +1,66 @@
+.ped-body {
+  padding: 4px 2px;
+}
+
+.ped-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #f5f3fa;
+  margin: 0 0 8px;
+}
+
+.ped-subtitle {
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: #9d97b3;
+  margin: 0 0 22px;
+}
+
+.ped-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.ped-actions--single {
+  justify-content: flex-end;
+}
+
+.ped-btn {
+  flex: 1;
+  border: none;
+  font-size: 13.5px;
+  font-weight: 600;
+  padding: 11px 16px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition:
+    transform 0.15s ease,
+    opacity 0.15s ease;
+}
+
+.ped-btn:hover {
+  transform: translateY(-1px);
+  opacity: 0.92;
+}
+
+.ped-btn--okay {
+  background: rgba(74, 222, 128, 0.14);
+  color: #4ade80;
+}
+
+.ped-btn--badly {
+  background: rgba(229, 72, 77, 0.14);
+  color: #e5484d;
+}
+
+.ped-btn--neutral {
+  flex: none;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  color: #f5f3fa;
+}
+
+.ped-btn--primary {
+  background: #8b7cf6;
+  color: #fff;
+}
