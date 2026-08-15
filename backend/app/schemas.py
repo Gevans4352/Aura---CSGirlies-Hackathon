@@ -5,7 +5,7 @@ from pydantic import BaseModel, EmailStr, Field, field_validator
 ONBOARDING_ANSWERS: dict[str, set[str]] = {
     "social_drain": {"A", "B", "C", "D"},
     "call_time": {"A", "B", "C", "D"},
-    "communication_style": {"A", "B", "C", "D"},
+    "communication_style": {"A", "B"},
     "priority": {"A", "B", "C", "D"},
     "privacy_consent": {"A", "B"},
 }
@@ -36,6 +36,7 @@ class AuthOut(BaseModel):
 
 class OnboardingIn(BaseModel):
     answers: dict[str, str]
+    quiet_mode_default: bool = False
 
     @field_validator("answers")
     @classmethod
