@@ -1,5 +1,7 @@
 import { useState, useRef, useEffect, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
 import "../../styles/Onboarding.css";
+import { api } from "../../utils/api";
 
 const PROMPT_SENTENCE =
   "The sun is warm on my face, and the meeting is almost over.";
@@ -32,9 +34,9 @@ const QUESTIONS = [
     ],
   },
   {
-    id: "priority",
-    title: "Hhow should aura respond?",
-    subtitle: "choose h ow aura communicates with you",
+    id: "communication_style",
+    title: "How should aura respond?",
+    subtitle: "Choose how Aura communicates with you.",
     options: [
       { letter: "A", text: "Direct and factual" },
       { letter: "B", text: "Gentle and supportive" },
@@ -42,7 +44,7 @@ const QUESTIONS = [
       { letter: "D", text: "All of the above" },
     ],
   },
-   {
+  {
     id: "priority",
     title: "What matters most to you?",
     subtitle: "What would you like Aura to help you with?",
@@ -54,10 +56,11 @@ const QUESTIONS = [
     ],
   },
   {
-    id: "Privacy",
+    id: "privacy_consent",
     title: "Onboarding",
-    subtitle: "To keep your data completely private, Aura never sends raw audio to the cloud. To activate your personalized model, we just need to store your baseline voice fingerprint as anonymous numbers on this device. Do you agree?",
-     options: [
+    subtitle:
+      "To keep your data completely private, Aura never sends raw audio to the cloud. To activate your personalized model, we just need to store your baseline voice fingerprint as anonymous numbers on this device. Do you agree?",
+    options: [
       { letter: "A", text: " YES, Activate Aura" },
       { letter: "B", text: "Learn more about how it works" },
     ],
@@ -67,19 +70,26 @@ const QUESTIONS = [
 export default function GetToKnowMe() {
   const [step, setStep] = useState("intro"); // "intro" | "voice" | "questions" | "done"
   const [voiceSampleUrl, setVoiceSampleUrl] = useState(null);
+  const navigate = useNavigate();
+  const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState("");
 
   const handleVoiceContinue = (audioUrl) => {
     setVoiceSampleUrl(audioUrl);
     setStep("questions");
   };
 
-  const handleQuestionsComplete = (answers) => {
-    // TODO: send { answers, voiceSampleUrl } to the backend, e.g.
-    // await api.post("/onboarding", { answers, voiceSampleUrl });
-    // The backend derives dashboardPriority + baselineMSI from `answers`
-    // and returns whatever the dashboard needs to render first.
-    console.log("onboarding answers", answers, voiceSampleUrl);
-    setStep("done");
+  const handleQuestionsComplete = async (answers) => {
+    setSubmitting(true);
+    setSubmitError("");
+    try {
+      await api("/api/v1/onboarding", { method: "POST", body: { answers } });
+      setStep("done");
+    } catch (err) {
+      setSubmitError(err.message);
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -90,6 +100,8 @@ export default function GetToKnowMe() {
         <QuestionFlow
           questions={QUESTIONS}
           onComplete={handleQuestionsComplete}
+          disabled={submitting}
+          error={submitError}
         />
       )}
       {step === "done" && (
@@ -100,6 +112,13 @@ export default function GetToKnowMe() {
               Aura is calibrating to what you told it.
             </p>
           </div>
+          <button
+            type="button"
+            className="gtk-btn gtk-btn-primary"
+            onClick={() => navigate("/dashboard")}
+          >
+            Continue to Aura
+          </button>
         </div>
       )}
     </div>
@@ -129,12 +148,11 @@ function IntroStep({ onBegin }) {
   );
 }
 
-
 // Voice baseline recording
 
 function VoiceStep({ onContinue }) {
   const [recordingState, setRecordingState] = useState("idle"); // idle | recording | recorded | error
-  const [amplitude, setAmplitude] = useState(0); 
+  const [amplitude, setAmplitude] = useState(0);
   const [audioUrl, setAudioUrl] = useState(null);
   const [errorMsg, setErrorMsg] = useState("");
 
@@ -182,7 +200,7 @@ function VoiceStep({ onContinue }) {
         sumSquares += centered * centered;
       }
       const rms = Math.sqrt(sumSquares / data.length);
-      setAmplitude(Math.min(1, rms * 4)); 
+      setAmplitude(Math.min(1, rms * 4));
       rafRef.current = requestAnimationFrame(tick);
     };
     rafRef.current = requestAnimationFrame(tick);
@@ -335,7 +353,7 @@ function VoiceStep({ onContinue }) {
 
 //  Five-question flow
 
-function QuestionFlow({ questions, onComplete }) {
+function QuestionFlow({ questions, onComplete, disabled = false, error = "" }) {
   const [index, setIndex] = useState(0);
   const [answers, setAnswers] = useState({});
   const [pulseKey, setPulseKey] = useState(0);
@@ -406,11 +424,16 @@ function QuestionFlow({ questions, onComplete }) {
       <button
         type="button"
         className="gtk-btn gtk-btn-primary"
-        disabled={!selected}
+        disabled={!selected || disabled}
         onClick={handleContinue}
       >
         Continue
       </button>
+      {error && (
+        <p className="gtk-error" role="alert">
+          {error}
+        </p>
+      )}
     </div>
   );
 }
