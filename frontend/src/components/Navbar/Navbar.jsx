@@ -1,4 +1,4 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import "../../styles/Navbar.css";
 
 const NAV_ITEMS = [
@@ -24,6 +24,8 @@ const NAV_ITEMS = [
 ];
 
 export default function NavBar() {
+  const navigate = useNavigate();
+
   return (
     <>
       <nav className="nav-sidebar" aria-label="Primary">
@@ -48,7 +50,11 @@ export default function NavBar() {
           ))}
         </ul>
 
-        <button type="button" className="nav-sidebar-settings">
+        <button
+          type="button"
+          className="nav-sidebar-settings"
+          onClick={() => navigate("/settings")}
+        >
           <SettingsIcon />
           <span>Settings</span>
         </button>
@@ -71,7 +77,6 @@ export default function NavBar() {
     </>
   );
 }
-
 
 export function SettingsIcon() {
   return (
