@@ -1,4 +1,7 @@
+import { useState, useEffect } from "react";
+import { AnimatePresence } from "framer-motion";
 import NavBar, { SettingsIcon } from "../../components/NavBar/NavBar";
+import Toast from "../../components/Toast/Toast";
 import "../../styles/Recalibration.css";
 
 const RECOMMENDATIONS = [
@@ -19,16 +22,19 @@ const RECOMMENDATIONS = [
   },
 ];
 
+// Each template carries both a soft and a blunt version of the same
 const BOUNDARY_TEMPLATES = [
   {
     id: "social_event",
     title: "Social Event",
-    message: "I need to step back tonight. I'll follow up tomorrow.",
+    soft: "I need to step back tonight. I'll follow up tomorrow.",
+    blunt: "Can't make it tonight. I'll reach out when I'm ready.",
   },
   {
     id: "work_meeting",
     title: "Work / Meeting",
-    message: "I need some time to recharge and won't be able to join this one.",
+    soft: "I need some time to recharge and won't be able to join this one.",
+    blunt: "I'm not joining this one. I need the time.",
   },
 ];
 
@@ -37,11 +43,23 @@ export default function Recalibration() {
   const eal = 94;
   const ealMax = 100;
 
+  const [tone, setTone] = useState("soft"); // "soft" | "blunt"
+  const [toastMessage, setToastMessage] = useState(null);
+
   const handleUseTemplate = (message) => {
-    // TODO: wire this up — likely copies to clipboard and/or opens the
-    // person's messaging app of choice with the text pre-filled.
-    navigator.clipboard?.writeText(message).catch(() => {});
+    // TODO: also consider opening the person's messaging app directly
+    // (mailto:/sms: links or a share-sheet API) instead of just clipboard.
+    navigator.clipboard
+      ?.writeText(message)
+      .then(() => setToastMessage("Copied to clipboard"))
+      .catch(() => setToastMessage("Couldn't copy — select the text manually"));
   };
+
+  useEffect(() => {
+    if (!toastMessage) return undefined;
+    const timer = setTimeout(() => setToastMessage(null), 2200);
+    return () => clearTimeout(timer);
+  }, [toastMessage]);
 
   return (
     <div className="rc-page">
@@ -93,22 +111,51 @@ export default function Recalibration() {
           </section>
 
           <section className="rc-templates-section">
-            <h2 className="rc-section-title">Boundary Templates</h2>
-            <p className="rc-templates-subtitle">
-              Choose a message that fits your situation.
-            </p>
+            <div className="rc-templates-heading-row">
+              <div>
+                <h2 className="rc-section-title">Boundary Templates</h2>
+                <p className="rc-templates-subtitle">
+                  Choose a message that fits your situation.
+                </p>
+              </div>
+
+              <div
+                className="rc-tone-toggle"
+                role="radiogroup"
+                aria-label="Message tone"
+              >
+                <button
+                  type="button"
+                  role="radio"
+                  aria-checked={tone === "soft"}
+                  className={`rc-tone-btn ${tone === "soft" ? "is-active" : ""}`}
+                  onClick={() => setTone("soft")}
+                >
+                  Soft
+                </button>
+                <button
+                  type="button"
+                  role="radio"
+                  aria-checked={tone === "blunt"}
+                  className={`rc-tone-btn ${tone === "blunt" ? "is-active" : ""}`}
+                  onClick={() => setTone("blunt")}
+                >
+                  Blunt
+                </button>
+              </div>
+            </div>
 
             <div className="rc-templates-list">
               {BOUNDARY_TEMPLATES.map((template) => (
                 <div key={template.id} className="rc-template-card">
                   <p className="rc-template-title">{template.title}</p>
                   <p className="rc-template-message">
-                    &ldquo;{template.message}&rdquo;
+                    &ldquo;{template[tone]}&rdquo;
                   </p>
                   <button
                     type="button"
                     className="rc-template-btn"
-                    onClick={() => handleUseTemplate(template.message)}
+                    onClick={() => handleUseTemplate(template[tone])}
                   >
                     Use template
                   </button>
@@ -118,6 +165,10 @@ export default function Recalibration() {
           </section>
         </div>
       </div>
+
+      <AnimatePresence>
+        {toastMessage && <Toast message={toastMessage} />}
+      </AnimatePresence>
     </div>
   );
 }
