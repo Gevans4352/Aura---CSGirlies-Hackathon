@@ -1,11 +1,15 @@
-import { useState } from "react";
-import "../../styles/login.css";
+import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { api, auth } from "../../utils/api";
+import { supabase } from "../../lib/supabase";
+import "../../styles/Login.css";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -18,18 +22,37 @@ const Login = () => {
 
     setLoading(true);
     try {
-      // TODO: replace with real auth call, e.g. authClient.signIn({ email, password })
-      await new Promise((resolve) => setTimeout(resolve, 800));
+      const data = await api("/api/v1/auth/login", {
+        method: "POST",
+        body: { email, password },
+      });
+      auth.setToken(data.access_token);
+      navigate("/onboarding");
     } catch (err) {
-      setError("Couldn't sign you in. Check your details and try again.");
+      setError(err.message);
     } finally {
       setLoading(false);
     }
   };
 
-  const handleGoogleSignIn = () => {
-    // TODO: wire up Google OAuth
+  const handleGoogleSignIn = async () => {
+    setError("");
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: "google",
+      options: { redirectTo: window.location.origin + "/login" },
+    });
+    if (error) setError(error.message);
   };
+  useEffect(() => {
+    const recoverSession = async () => {
+      const { data } = await supabase.auth.getSession();
+      if (data.session) {
+        auth.setToken(data.session.access_token);
+        navigate("/onboarding");
+      }
+    };
+    recoverSession();
+  }, [navigate]);
 
   return (
     <div className="login-page">
@@ -97,7 +120,6 @@ const Login = () => {
             type="submit"
             className="login-btn login-btn-primary"
             disabled={loading}
-           onClick={() => navigate("/get-to-know")}
           >
             {loading ? "Signing In…" : "Sign In"}
           </button>
