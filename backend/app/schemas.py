@@ -37,3 +37,9 @@ class OnboardingOut(BaseModel):
     baseline_msi: float | None = None
     dashboard_priority: str | None = None
     created_at: datetime
+
+
+class AnalysisOut(BaseModel):
+    emotional_allostatic_load: int = Field(ge=0, le=100)
+    masking_strain_index: int = Field(ge=0, le=100)
+    timestamp: datetime
