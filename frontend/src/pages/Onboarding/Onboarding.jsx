@@ -95,11 +95,14 @@ export default function GetToKnowMe() {
     setStep("questions");
   };
 
-  const handleQuestionsComplete = async (answers) => {
+  const handleQuestionsComplete = async (answers, quietModeDefault) => {
     setSubmitting(true);
     setSubmitError("");
     try {
-      await api("/api/v1/onboarding", { method: "POST", body: { answers } });
+      await api("/api/v1/onboarding", {
+        method: "POST",
+        body: { answers, quiet_mode_default: quietModeDefault },
+      });
       setStep("done");
     } catch (err) {
       setSubmitError(err.message);
@@ -406,13 +409,12 @@ function QuestionFlow({ questions, onComplete, disabled = false, error = "" }) {
 
   const handleQuietModeChange = (value) => {
     setQuietModeDefault(value);
-    setAnswers((prev) => ({ ...prev, quiet_mode_default: value }));
   };
 
   const handleContinue = () => {
     if (!selected) return;
     if (isLast) {
-      onComplete(answers);
+      onComplete(answers, quietModeDefault);
     } else {
       setIndex((i) => i + 1);
     }

@@ -5,7 +5,8 @@ create table if not exists public.profiles (
       baseline_msi numeric,
       dashboard_priority text,
       created_at timestamptz default now(),
-      updated_at timestamptz default now()
+      updated_at timestamptz default now(),
+      quiet_mode_default boolean not null default false
 );
 
 alter table public.profiles enable row level security;

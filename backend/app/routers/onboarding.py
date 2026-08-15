@@ -43,6 +43,7 @@ def create_onboarding(
         "answers": payload.answers,
         "baseline_msi": _derive_msi(payload.answers),
         "dashboard_priority": _derive_priority(payload.answers),
+        "quiet_mode_default": payload.quiet_mode_default,
     }
     saved = admin.table("profiles").upsert(row, on_conflict="id").execute().data[0]
     return OnboardingOut(**saved)
