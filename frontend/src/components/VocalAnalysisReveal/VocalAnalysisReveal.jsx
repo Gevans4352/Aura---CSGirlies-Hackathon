@@ -44,6 +44,7 @@ export default function VocalAnalysisReveal({
   const [phase, setPhase] = useState("idle"); // idle | playing | done
   const [progress, setProgress] = useState(0);
   const [displayEal, setDisplayEal] = useState(100);
+  const [runKey, setRunKey] = useState(0);
 
   const rafRef = useRef(null);
   const startRef = useRef(null);
@@ -166,10 +167,7 @@ export default function VocalAnalysisReveal({
     setDisplayEal(100);
     setBaselineBars(idleBars);
     setOutputBars(idleBars);
-    if (audioRef.current) {
-      audioRef.current.pause();
-      audioRef.current.currentTime = 0;
-    }
+    setRunKey((k) => k + 1);
     cleanupAudio();
   };
 
@@ -177,7 +175,9 @@ export default function VocalAnalysisReveal({
 
   return (
     <div className="var-wrap">
-      {audioSrc && <audio ref={audioRef} src={audioSrc} preload="auto" />}
+      {audioSrc && (
+        <audio key={runKey} ref={audioRef} src={audioSrc} preload="auto" />
+      )}
 
       <div className="var-grid">
         <div className="var-card">

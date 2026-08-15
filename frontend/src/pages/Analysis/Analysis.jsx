@@ -1,9 +1,9 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import NavBar, { SettingsIcon } from "../../components/NavBar/NavBar";
 import MeltdownProdromeAlert from "../../components/MeltdownProdromeAlert/MeltdownProdromeAlert";
 import VocalAnalysisReveal from "../../components/VocalAnalysisReveal/VocalAnalysisReveal";
+import { useQuietMode } from "../../hooks/useQuietMode";
 import { setPendingDebrief } from "../../lib/debriefStorage";
-import { api } from "../../utils/api";
 import "../../styles/Analysis.css";
 
 const EAL_LEGEND = [
@@ -37,23 +37,12 @@ const KEY_INDICATORS = [
 ];
 
 export default function Analysis() {
+  const quiet = useQuietMode();
   // null = analysis hasn't run yet this visit — the EAL card stays in
   // a placeholder state until VocalAnalysisReveal reports a result.
   const [ealPercent, setEalPercent] = useState(null);
   const [showAlert, setShowAlert] = useState(false);
-  const [targetEal, setTargetEal] = useState(18);
-
-  useEffect(() => {
-    let active = true;
-    api("/api/v1/analyze", { method: "POST", body: new FormData() })
-      .then((data) => {
-        if (active) setTargetEal(data.emotional_allostatic_load);
-      })
-      .catch(() => {});
-    return () => {
-      active = false;
-    };
-  }, []);
+  const targetEal = 18;
 
   const ealTier = ealPercent !== null ? getEalTier(ealPercent) : null;
 
@@ -66,15 +55,17 @@ export default function Analysis() {
   };
 
   return (
-    <div className="an-page">
+    <div className={`an-page ${quiet ? "quiet-mode" : ""}`}>
       <NavBar />
 
-      <MeltdownProdromeAlert
-        isOpen={showAlert}
-        probability={78}
-        autoDismissMs={60000}
-        onDismiss={() => setShowAlert(false)}
-      />
+      {!quiet && (
+        <MeltdownProdromeAlert
+          isOpen={showAlert}
+          probability={78}
+          autoDismissMs={60000}
+          onDismiss={() => setShowAlert(false)}
+        />
+      )}
 
       <div className="an-main">
         <header className="an-header">
@@ -94,14 +85,8 @@ export default function Analysis() {
               See how Aura detects changes from your natural baseline.
             </p>
 
-            {/*
-              Swap audioSrc for a real calm-voice clip once you have one,
-              e.g. "/audio/baseline-sample.mp3". With no audioSrc it falls
-              back to a synthetic calm sway, so this still demos fine
-              without a real recording.
-            */}
             <VocalAnalysisReveal
-              audioSrc={null}
+              audioSrc="/audio/aura_audio.wav"
               durationMs={6500}
               targetEal={targetEal}
               onComplete={handleAnalysisComplete}
