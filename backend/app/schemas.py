@@ -1,6 +1,14 @@
 from datetime import datetime
 
-from pydantic import BaseModel, EmailStr, Field
+from pydantic import BaseModel, EmailStr, Field, field_validator
+
+ONBOARDING_ANSWERS: dict[str, set[str]] = {
+    "social_drain": {"A", "B", "C", "D"},
+    "call_time": {"A", "B", "C", "D"},
+    "communication_style": {"A", "B", "C", "D"},
+    "priority": {"A", "B", "C", "D"},
+    "privacy_consent": {"A", "B"},
+}
 
 
 class RegisterIn(BaseModel):
@@ -28,6 +36,20 @@ class AuthOut(BaseModel):
 
 class OnboardingIn(BaseModel):
     answers: dict[str, str]
+
+    @field_validator("answers")
+    @classmethod
+    def _validate_answers(cls, answers: dict[str, str]) -> dict[str, str]:
+        unexpected = set(answers) - set(ONBOARDING_ANSWERS)
+        if unexpected:
+            raise ValueError(f"Unexpected answers: {sorted(unexpected)}")
+        missing = set(ONBOARDING_ANSWERS) - set(answers)
+        if missing:
+            raise ValueError(f"Missing answers: {sorted(missing)}")
+        for key, value in answers.items():
+            if value not in ONBOARDING_ANSWERS[key]:
+                raise ValueError(f"Invalid answer '{value}' for '{key}'")
+        return answers
 
 
 class OnboardingOut(BaseModel):
