@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from pydantic import BaseModel, EmailStr, Field
 
 
@@ -22,3 +24,16 @@ class AuthOut(BaseModel):
     access_token: str
     refresh_token: str
     user: UserOut
+
+
+class OnboardingIn(BaseModel):
+    answers: dict[str, str]
+
+
+class OnboardingOut(BaseModel):
+    id: str
+    name: str | None = None
+    answers: dict[str, str]
+    baseline_msi: float | None = None
+    dashboard_priority: str | None = None
+    created_at: datetime
