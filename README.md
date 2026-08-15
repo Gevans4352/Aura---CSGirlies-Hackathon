@@ -138,7 +138,7 @@ The UX is designed around a three-act narrative: Calm, Crisis, and Rescue. Every
 The architecture for the hackathon MVP is intentionally lightweight to fit the 3-day sprint, focusing on UI fidelity and a convincing narrative flow.
 
 - **Frontend (React, Three.js/React Three Fiber, Framer Motion):** Handles UI rendering, Aura Sphere animations, audio playback, authentication, onboarding, consent/session controls, accessibility, and user interactions. Communicates with the backend for simulated score retrieval.
-- **Backend (Python FastAPI):** Provides a single endpoint (`POST /api/v1/analyze`). Accepts a dummy file upload (ignored) and immediately returns a pre-configured JSON payload. Serves to demonstrate the technical scaffolding for a future real analysis pipeline.
+- **Backend (Python FastAPI):** Provides Supabase-backed authentication (`/api/v1/auth`) and the vocal analysis endpoint (`POST /api/v1/analyze`). The analysis endpoint accepts a dummy file upload (ignored) and immediately returns a pre-configured JSON payload, demonstrating the technical scaffolding for a future real analysis pipeline.
 - **Data Layer:** No persistent database in the MVP. All data for the timeline, scores, energy budget, and alerts is hard-coded or held in client-side state, reset on refresh.
 - **AI/ML Simulation:** Not running in real-time. Offline Python scripts using Librosa and Matplotlib generated the spectral centroid graphs, jitter visualizations, and the chaotic "nervous system output" audio track for the demo assets. Typing-pattern and calendar-awareness insights are similarly canned for the demo.
 
@@ -221,7 +221,7 @@ This is a proof-of-concept simulation, not a production-ready application.
 ### Prerequisites
 - Node.js (v18 or higher)
 - npm
-- Python (v3.9 or higher)
+- Python (v3.10 or higher; 3.12 recommended)
 - pip
 
 ### Clone the Repository
@@ -241,7 +241,7 @@ npm install
 cd ../backend
 python -m venv venv
 source venv/bin/activate  # On Windows: venv\Scripts\activate
-pip install fastapi uvicorn python-multipart
+pip install -r requirements.txt
 ```
 
 ### Environment Variables
@@ -251,17 +251,21 @@ Create a `.env` file in the `frontend` directory:
 | Variable | Required | Description |
 |---|---|---|
 | `VITE_API_URL` | Yes | The URL of the backend server. Default: `http://localhost:8000` |
+| `VITE_SUPABASE_URL` | Yes | The URL of the Supabase project (Project Settings → API) |
+| `VITE_SUPABASE_PUBLISHABLE_KEY` | Yes | The Supabase publishable (anon) key |
 
 Create a `.env` file in the `backend` directory:
 
 | Variable | Required | Description |
 |---|---|---|
-| `PORT` | No | The port for the backend server. Default: `8000` |
+| `SUPABASE_URL` | Yes | The URL of your Supabase project |
+| `SUPABASE_ANON_KEY` | Yes | The Supabase anon key |
+| `SUPABASE_SERVICE_ROLE_KEY` | Yes | The Supabase service role key |
 
 ### Development Server
 ```bash
 cd backend
-uvicorn main:app --reload --port 8000
+uvicorn app.main:app --reload --port 8000
 ```
 ```bash
 cd frontend
@@ -292,7 +296,28 @@ npm run build
 
 | Method | Endpoint | Description | Authentication |
 |---|---|---|---|
-| POST | `/api/v1/analyze` | Simulates vocal analysis and returns a pre-calculated stress score. | None |
+| POST | `/api/v1/auth/register` | Creates a user and returns session tokens. Body: `{name, email, password}` | None |
+| POST | `/api/v1/auth/login` | Signs in a user and returns session tokens. Body: `{email, password}` | None |
+| GET | `/api/v1/auth/me` | Returns the current authenticated user | Bearer token |
+| POST | `/api/v1/auth/logout` | Ends the current session | Bearer token |
+| GET | `/api/v1/health` | Health check | None |
+| POST | `/api/v1/analyze` | *Pending:* simulated vocal analysis. Returns a pre-calculated stress score. | None |
+
+**Auth Response (200 OK):** `register` and `login` return session tokens:
+
+```json
+{
+  "access_token": "...",
+  "refresh_token": "...",
+  "user": {
+    "id": "...",
+    "email": "...",
+    "name": "..."
+  }
+}
+```
+
+**Analyze Request (Pending):**
 
 **Request Body:** Form-data with a `file` field (optional, ignored).
 
@@ -316,32 +341,39 @@ npm run build
 ```
 aura/
 ├── backend/
-│   ├── main.py              # FastAPI application and endpoint logic
-│   └── requirements.txt     # Python dependencies
+│   ├── requirements.txt        # Python dependencies
+│   └── app/
+│       ├── main.py             # FastAPI app, CORS, routers
+│       ├── core/config.py      # Settings from .env
+│       ├── deps.py             # Supabase clients + JWT validation
+│       ├── schemas.py          # Pydantic models
+│       └── routers/            # auth, health, analyze (pending), onboarding (pending)
 ├── frontend/
-├── public/
-│   └── audio/                 # Pre-recorded demo audio
-├── src/
-│   ├── components/            # Reusable UI components
-│   │   ├── AuraSphere/
-│   │   ├── Timeline/
-│   │   ├── Modal/
-│   │   ├── ConsentBanner/
-│   │   └── ...
-│   ├── pages/                 # Page-level components
-│   │   ├── Login/
-│   │   ├── Signup/
-│   │   ├── Dashboard/
-│   │   ├── LieDetector/
-│   │   └── Recalibration/
-│   ├── hooks/                 # Reusable React hooks
-│   ├── utils/                 # API client and utility functions
-│   ├── styles/                # Global styles and theme
-│   ├── App.jsx
-│   └── main.jsx
-├── index.html
-├── package.json
-└── vite.config.js
+│   ├── public/
+│   │   └── audio/                 # Pre-recorded demo audio
+│   ├── src/
+│   │   ├── components/            # Reusable UI components
+│   │   │   ├── AuraSphere/
+│   │   │   ├── Timeline/
+│   │   │   ├── Modal/
+│   │   │   ├── ConsentBanner/
+│   │   │   └── ...
+│   │   ├── pages/                 # Page-level components
+│   │   │   ├── Login/
+│   │   │   ├── Signup/
+│   │   │   ├── Dashboard/
+│   │   │   ├── LieDetector/
+│   │   │   └── Recalibration/
+│   │   ├── hooks/                 # Reusable React hooks
+│   │   ├── utils/                 # API client and utility functions
+│   │   ├── styles/                # Global styles and theme
+│   │   ├── lib/supabase.js     # Supabase client (Google OAuth)
+│   │   ├── App.jsx
+│   │   └── main.jsx
+│   ├── index.html
+│   ├── package.json
+│   └── vite.config.js
+├── aura-simulation-strategy/   # Offline audio/graph generation scripts
 └── README.md
 ```
 
