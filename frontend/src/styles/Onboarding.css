@@ -1,0 +1,436 @@
+.gtk-page {
+  --bg-top: #0c0b18;
+  --bg-bottom: #17122b;
+  --sphere-core: #6fa8ff;
+  --sphere-edge: #2c4f9e;
+  --panel-border: rgba(255, 255, 255, 0.08);
+  --text-primary: #f5f5fa;
+  --text-secondary: rgba(245, 245, 250, 0.55);
+  --text-muted: rgba(245, 245, 250, 0.4);
+  --accent-purple: #8b6de0;
+  --accent-purple-strong: #7c5cd6;
+  --danger: #ff8f8f;
+
+  min-height: 100vh;
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  background: linear-gradient(180deg, var(--bg-top) 0%, var(--bg-bottom) 100%);
+  color: var(--text-primary);
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", sans-serif;
+}
+
+.gtk-step {
+  width: 100%;
+  max-width: 420px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 56px 24px 40px;
+}
+
+.gtk-copy {
+  margin-bottom: 32px;
+}
+
+.gtk-title {
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  margin: 0 0 8px;
+}
+
+.gtk-subtitle {
+  font-size: 14px;
+  line-height: 1.4;
+  color: var(--text-secondary);
+  margin: 0;
+  max-width: 300px;
+  margin-inline: auto;
+}
+
+.gtk-sphere {
+  --amplitude: 0;
+  width: clamp(150px, 42vw, 190px);
+  height: clamp(150px, 42vw, 190px);
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at 35% 30%,
+    var(--sphere-core),
+    var(--sphere-edge) 70%
+  );
+  box-shadow: 0 0 90px 10px rgba(74, 129, 226, 0.35);
+  margin-bottom: 36px;
+  flex-shrink: 0;
+}
+
+.gtk-sphere-breathe {
+  animation: gtk-breathe 4.5s ease-in-out infinite;
+}
+
+@keyframes gtk-breathe {
+  0%,
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 80px 8px rgba(74, 129, 226, 0.3);
+  }
+  50% {
+    transform: scale(1.045);
+    box-shadow: 0 0 110px 16px rgba(74, 129, 226, 0.45);
+  }
+}
+
+.gtk-sphere-listening {
+  animation: none;
+  transform: scale(calc(1 + var(--amplitude) * 0.12));
+  box-shadow: 0 0 calc(80px + var(--amplitude) * 60px)
+    calc(8px + var(--amplitude) * 20px)
+    rgba(111, 168, 255, calc(0.35 + var(--amplitude) * 0.35));
+  transition:
+    transform 70ms ease-out,
+    box-shadow 70ms ease-out;
+}
+
+.gtk-btn {
+  width: 100%;
+  height: 52px;
+  border-radius: 14px;
+  border: none;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    transform 0.1s ease,
+    filter 0.15s ease,
+    opacity 0.15s ease;
+}
+
+.gtk-btn-primary {
+  background: linear-gradient(
+    180deg,
+    var(--accent-purple) 0%,
+    var(--accent-purple-strong) 100%
+  );
+  color: #fff;
+}
+
+.gtk-btn-primary:hover:not(:disabled) {
+  filter: brightness(1.06);
+}
+
+.gtk-btn-primary:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.gtk-btn-primary:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.gtk-btn:focus-visible {
+  outline: 2px solid var(--accent-purple);
+  outline-offset: 3px;
+}
+
+
+.gtk-prompt-label {
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin: 0 0 12px;
+}
+
+.gtk-prompt-sentence {
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.5;
+  color: var(--text-primary);
+  max-width: 300px;
+  margin: 0 0 32px;
+}
+
+.gtk-mic-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.gtk-mic-btn {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  border: none;
+  background: linear-gradient(
+    180deg,
+    var(--accent-purple) 0%,
+    var(--accent-purple-strong) 100%
+  );
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease,
+    filter 0.15s ease;
+}
+
+.gtk-mic-btn:hover:not(:disabled) {
+  filter: brightness(1.08);
+}
+
+.gtk-mic-btn:disabled {
+  cursor: default;
+  opacity: 0.7;
+}
+
+.gtk-mic-btn.is-recording {
+  animation: gtk-mic-pulse 1.4s ease-in-out infinite;
+}
+
+@keyframes gtk-mic-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(139, 109, 224, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 0 14px rgba(139, 109, 224, 0);
+  }
+}
+
+.gtk-mic-btn.is-recorded {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text-secondary);
+}
+
+.gtk-mic-label {
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+.gtk-playback {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.gtk-audio {
+  width: 100%;
+  max-width: 300px;
+  height: 36px;
+}
+
+.gtk-link-btn {
+  background: none;
+  border: none;
+  color: var(--accent-purple);
+  font-size: 13px;
+  cursor: pointer;
+  padding: 4px;
+}
+
+.gtk-link-btn:hover {
+  text-decoration: underline;
+}
+
+.gtk-error {
+  font-size: 13px;
+  color: var(--danger);
+  margin: 0 0 16px;
+}
+
+.gtk-privacy {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--text-muted);
+  margin: 0 0 28px;
+}
+
+
+.gtk-progress {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 24px;
+}
+
+.gtk-progress-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.15);
+  transition:
+    background 0.2s ease,
+    width 0.2s ease;
+}
+
+.gtk-progress-dot.is-done {
+  background: var(--accent-purple-strong);
+}
+
+.gtk-progress-dot.is-active {
+  width: 18px;
+  border-radius: 3px;
+  background: var(--accent-purple);
+}
+
+.gtk-step-question .gtk-sphere {
+  width: clamp(120px, 34vw, 160px);
+  height: clamp(120px, 34vw, 160px);
+  margin-bottom: 32px;
+}
+
+.gtk-sphere-confirm {
+  animation:
+    gtk-confirm-pulse 0.6s ease-out,
+    gtk-breathe 4.5s ease-in-out 0.6s infinite;
+}
+
+@keyframes gtk-confirm-pulse {
+  0% {
+    transform: scale(1);
+  }
+  35% {
+    transform: scale(1.12);
+    box-shadow: 0 0 130px 22px rgba(111, 168, 255, 0.55);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.gtk-options {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.gtk-option {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  min-height: 56px;
+  padding: 14px 18px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--panel-border);
+  color: var(--text-primary);
+  font-size: 14px;
+  text-align: left;
+  cursor: pointer;
+  transition:
+    border-color 0.15s ease,
+    background 0.15s ease,
+    transform 0.1s ease;
+}
+
+.gtk-option:hover {
+  background: rgba(255, 255, 255, 0.07);
+}
+
+.gtk-option:active {
+  transform: scale(0.99);
+}
+
+.gtk-option.is-selected {
+  border-color: var(--accent-purple);
+  background: rgba(139, 109, 224, 0.14);
+}
+
+.gtk-option-letter {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 700;
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text-secondary);
+}
+
+.gtk-option.is-selected .gtk-option-letter {
+  background: var(--accent-purple);
+  color: #fff;
+}
+
+.gtk-option-text {
+  flex: 1;
+  line-height: 1.4;
+}
+
+.gtk-step-done {
+  justify-content: center;
+  min-height: 60vh;
+}
+
+.gtk-placeholder {
+  min-height: 60vh;
+}
+
+
+@media (min-width: 1024px) {
+  .gtk-step {
+    max-width: 460px;
+    padding: 80px 24px;
+  }
+
+  .gtk-title {
+    font-size: 30px;
+  }
+
+  .gtk-subtitle {
+    font-size: 16px;
+    max-width: 340px;
+  }
+
+  .gtk-sphere {
+    width: 220px;
+    height: 220px;
+    margin-bottom: 44px;
+  }
+
+  .gtk-prompt-sentence {
+    font-size: 18px;
+    max-width: 340px;
+  }
+
+  .gtk-btn,
+  .gtk-mic-wrap {
+    max-width: 340px;
+  }
+
+  .gtk-options {
+    max-width: 380px;
+  }
+
+  .gtk-option {
+    font-size: 15px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gtk-sphere-breathe,
+  .gtk-mic-btn.is-recording {
+    animation: none;
+  }
+
+  .gtk-btn,
+  .gtk-mic-btn {
+    transition: none;
+  }
+}
