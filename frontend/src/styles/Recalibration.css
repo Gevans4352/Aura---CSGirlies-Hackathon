@@ -1,0 +1,279 @@
+.rc-page {
+  --bg-top: #0c0b18;
+  --bg-bottom: #17122b;
+  --panel-border: rgba(255, 255, 255, 0.08);
+  --card-bg: rgba(255, 255, 255, 0.04);
+  --text-primary: #f5f5fa;
+  --text-secondary: rgba(245, 245, 250, 0.55);
+  --text-muted: rgba(245, 245, 250, 0.4);
+  --accent-purple: #8b6de0;
+  --accent-purple-strong: #7c5cd6;
+  --danger: #e5484d;
+
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(180deg, var(--bg-top) 0%, var(--bg-bottom) 100%);
+  color: var(--text-primary);
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", sans-serif;
+}
+
+.rc-main {
+  flex: 1;
+  padding: 24px 20px 96px;
+}
+
+.rc-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+.rc-brand {
+  font-size: 20px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.rc-brand-sub {
+  font-size: 12px;
+  color: var(--text-secondary);
+  margin: 2px 0 0;
+}
+
+.rc-icon-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  border: 1px solid var(--panel-border);
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition:
+    background 0.15s ease,
+    color 0.15s ease;
+}
+
+.rc-icon-btn:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text-primary);
+}
+
+.rc-badge {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+  border: 1px solid var(--panel-border);
+  border-radius: 6px;
+  padding: 3px 8px;
+  margin-bottom: 12px;
+}
+
+.rc-title {
+  font-size: 22px;
+  font-weight: 700;
+  margin: 0 0 6px;
+}
+
+.rc-subtitle {
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin: 0 0 20px;
+}
+
+.rc-section-title {
+  font-size: 16px;
+  font-weight: 700;
+  margin: 0 0 14px;
+}
+
+
+.rc-intro-section {
+  margin-bottom: 28px;
+}
+
+.rc-state-card {
+  background: var(--card-bg);
+  border: 1px solid var(--panel-border);
+  border-radius: 14px;
+  padding: 16px 18px;
+}
+
+.rc-state-label {
+  font-size: 12px;
+  color: var(--text-secondary);
+  margin: 0 0 6px;
+}
+
+.rc-state-value {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--danger);
+  margin: 0 0 4px;
+}
+
+.rc-state-detail {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+
+.rc-recommend-section {
+  margin-bottom: 32px;
+}
+
+.rc-recommend-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.rc-recommend-item {
+  display: flex;
+  gap: 12px;
+}
+
+.rc-recommend-number {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: rgba(139, 109, 224, 0.16);
+  color: var(--accent-purple);
+  font-size: 12px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.rc-recommend-title {
+  font-size: 14px;
+  font-weight: 600;
+  margin: 0 0 2px;
+}
+
+.rc-recommend-description {
+  font-size: 13px;
+  line-height: 1.4;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+
+.rc-templates-subtitle {
+  font-size: 12px;
+  color: var(--text-secondary);
+  margin: -8px 0 16px;
+}
+
+.rc-templates-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.rc-template-card {
+  background: var(--card-bg);
+  border: 1px solid var(--panel-border);
+  border-radius: 14px;
+  padding: 16px;
+}
+
+.rc-template-title {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  margin: 0 0 8px;
+}
+
+.rc-template-message {
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--text-primary);
+  margin: 0 0 14px;
+}
+
+.rc-template-btn {
+  height: 38px;
+  padding: 0 16px;
+  border-radius: 10px;
+  border: 1px solid var(--panel-border);
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text-primary);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.rc-template-btn:hover {
+  background: rgba(255, 255, 255, 0.09);
+}
+
+
+@media (min-width: 1024px) {
+  .rc-page {
+    flex-direction: row;
+  }
+
+  .rc-main {
+    flex: 1;
+    padding: 40px 48px;
+    max-width: 1200px;
+  }
+
+  .rc-header {
+    margin-bottom: 32px;
+  }
+
+  .rc-title {
+    font-size: 28px;
+  }
+
+  .rc-subtitle {
+    font-size: 14px;
+  }
+
+  .rc-body {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    align-items: start;
+  }
+
+  .rc-intro-section,
+  .rc-recommend-section {
+    grid-column: 1;
+  }
+
+  .rc-recommend-section {
+    grid-row: 2;
+    margin-bottom: 0;
+  }
+
+  .rc-templates-section {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rc-icon-btn,
+  .rc-template-btn {
+    transition: none;
+  }
+}
