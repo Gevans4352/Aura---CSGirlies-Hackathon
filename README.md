@@ -9,7 +9,7 @@ Aura is a proof-of-concept web application developed for a 3-day hackathon sprin
 
 The application presents a simulated yet highly realistic interface where users can experience the core premise: spoken words can say "I am fine" while the vocal nervous system betrays an entirely different reality. Aura visualizes this contradiction through an abstract glowing sphere, a side-by-side audio "lie detector" comparison, and a predictive alert timeline.
 
-The target users are individuals with high-functioning depression or masked autism who have been conditioned to ignore their internal signals until a severe episode occurs. The product aims to provide a silent, non-intrusive early warning system — one that gives the user tools to act on that warning without draining the energy they don't have.
+The target users are individuals with high-functioning depression or masked autism who have been conditioned to ignore their internal signals until a severe episode occurs. The product aims to provide a silent, non-intrusive early warning system one that gives the user tools to act on that warning without draining the energy they don't have.
 
 ## The Problem
 
@@ -41,7 +41,7 @@ Aura differs from existing mental health applications and voice-biomarker platfo
 
 **Consumer versus Clinical/B2B.** Most voice-biomarker technology today is sold into hospitals, call centers, and insurers monitoring people from the outside. Aura is something the user opens themselves, on their own terms.
 
-**Privacy by physics versus Privacy by promise.** Many health apps ask users to trust that their data will be deleted. Aura is designed around the principle that raw audio never leaves the user's device, and that only the user's own microphone input — never a call's mixed output — is ever analyzed, eliminating the need for trust in cloud storage or third-party voices being captured. *(Note: The hackathon MVP simulates this principle, with the architectural vision clearly defined.)*
+**Privacy by physics versus Privacy by promise.** Many health apps ask users to trust that their data will be deleted. Aura is designed around the principle that raw audio never leaves the user's device, and that only the user's own microphone input — never a call's mixed output is ever analyzed, eliminating the need for trust in cloud storage or third-party voices being captured. *(Note: The hackathon MVP simulates this principle, with the architectural vision clearly defined.)*
 
 **Specific targeting of masking.** General mental-health tools often focus on symptoms rather than the potential strain associated with autistic camouflaging. Aura introduces a Masking Strain Index (MSI), a prototype metric designed to estimate changes in masking-related strain using consented signals. It is not a clinical diagnostic measure, but a way to help users recognize when their current social and environmental demands may be exceeding their personal baseline.
 
