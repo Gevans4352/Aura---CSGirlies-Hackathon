@@ -8,6 +8,7 @@ import {
   getPendingDebrief,
   clearPendingDebrief,
 } from "../../lib/debriefStorage";
+import { api } from "../../utils/api";
 import "../../styles/Dashboard.css";
 
 const INSIGHTS = [
@@ -68,23 +69,29 @@ export default function Dashboard() {
   const [spent, setSpent] = useState(() =>
     Math.round(62 * getElapsedDayFraction() * PASSIVE_DRAIN_CEILING),
   );
-  const [showDebrief, setShowDebrief] = useState(false);
-  const [debriefEventLabel, setDebriefEventLabel] = useState("tonight's call");
-
   // Real trigger: if something flagged a debrief before the person
   // left (possibly on a totally different day), it's waiting here.
-  useEffect(() => {
-    const pending = getPendingDebrief();
-    if (pending) {
-      setDebriefEventLabel(pending.eventLabel);
-      setShowDebrief(true);
-    }
-  }, []);
+  const [pendingDebrief] = useState(() => getPendingDebrief());
+  const [debriefEventLabel, setDebriefEventLabel] = useState(
+    () => pendingDebrief?.eventLabel ?? "tonight's call",
+  );
+  const [showDebrief, setShowDebrief] = useState(() => pendingDebrief !== null);
 
-  // TODO: replace with real values from the backend once wired up
-  const eal = 12;
+  const [eal, setEal] = useState(0);
   const ealMax = 100;
   const energyMax = 100;
+
+  useEffect(() => {
+    let active = true;
+    api("/api/v1/analysis/latest")
+      .then((data) => {
+        if (active) setEal(data.emotional_allostatic_load);
+      })
+      .catch(() => {});
+    return () => {
+      active = false;
+    };
+  }, []);
 
   // Keeps the passive drain moving forward with the real clock while
   // the dashboard is open, without ever walking spent backwards.
@@ -280,7 +287,6 @@ export default function Dashboard() {
   );
 }
 
-
 function AnimatedNumber({ value, duration = 1.1 }) {
   const [display, setDisplay] = useState(0);
 
@@ -296,7 +302,6 @@ function AnimatedNumber({ value, duration = 1.1 }) {
 
   return <>{display}</>;
 }
-
 
 function DotIcon({ color }) {
   return (

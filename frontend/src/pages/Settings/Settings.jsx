@@ -1,5 +1,8 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
+import { api, auth } from "../../utils/api";
+import { supabase } from "../../lib/supabase";
 import "../../styles/Settings.css";
 
 const container = {
@@ -104,6 +107,7 @@ function SettingsSection({ title, description, children }) {
 }
 
 export default function Settings() {
+  const navigate = useNavigate();
   const [micStatus] = useState("granted"); // wire to real getUserMedia permission state later
   const [consentBuffer, setConsentBuffer] = useState(30);
   const [tone, setTone] = useState("gentle");
@@ -113,6 +117,37 @@ export default function Settings() {
   const [textSize, setTextSize] = useState("medium");
   const [highContrast, setHighContrast] = useState(false);
   const [alerts, setAlerts] = useState({ meltdown: true, debrief: true });
+  const [email, setEmail] = useState("");
+
+  useEffect(() => {
+    let active = true;
+    api("/api/v1/onboarding")
+      .then((data) => {
+        if (!active) return;
+        setQuietModeDefault(Boolean(data.quiet_mode_default));
+        setTone(data.answers.communication_style === "A" ? "direct" : "gentle");
+      })
+      .catch(() => {});
+    api("/api/v1/auth/me")
+      .then((data) => {
+        if (active) setEmail(data.email || "");
+      })
+      .catch(() => {});
+    return () => {
+      active = false;
+    };
+  }, []);
+
+  const handleSignOut = async () => {
+    try {
+      await api("/api/v1/auth/logout", { method: "POST" });
+    } catch {
+      // clear the local session regardless of the backend result
+    }
+    await supabase.auth.signOut().catch(() => {});
+    auth.clearToken();
+    navigate("/");
+  };
 
   return (
     <div className="settings-page">
@@ -133,7 +168,7 @@ export default function Settings() {
         >
           <SettingRow
             label="Email"
-            description="jenny@example.com"
+            description={email || "—"}
             control={<button className="text-btn">Change</button>}
           />
           <SettingRow
@@ -149,7 +184,15 @@ export default function Settings() {
           />
           <SettingRow
             label="Sign out"
-            control={<button className="text-btn">Sign out</button>}
+            control={
+              <button
+                type="button"
+                className="text-btn"
+                onClick={handleSignOut}
+              >
+                Sign out
+              </button>
+            }
           />
         </SettingsSection>
 

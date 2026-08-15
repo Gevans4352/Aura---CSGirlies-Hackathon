@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { AnimatePresence } from "framer-motion";
 import NavBar, { SettingsIcon } from "../../components/NavBar/NavBar";
 import Toast from "../../components/Toast/Toast";
+import { api } from "../../utils/api";
 import "../../styles/Recalibration.css";
 
 const RECOMMENDATIONS = [
@@ -39,12 +40,29 @@ const BOUNDARY_TEMPLATES = [
 ];
 
 export default function Recalibration() {
-  // TODO: replace with real values from the backend
-  const eal = 94;
+  const [eal, setEal] = useState(0);
   const ealMax = 100;
 
   const [tone, setTone] = useState("soft"); // "soft" | "blunt"
   const [toastMessage, setToastMessage] = useState(null);
+  useEffect(() => {
+    let active = true;
+    api("/api/v1/analysis/latest")
+      .then((data) => {
+        if (active) setEal(data.emotional_allostatic_load);
+      })
+      .catch(() => {});
+    api("/api/v1/onboarding")
+      .then((data) => {
+        if (active) {
+          setTone(data.answers.communication_style === "A" ? "blunt" : "soft");
+        }
+      })
+      .catch(() => {});
+    return () => {
+      active = false;
+    };
+  }, []);
 
   const handleUseTemplate = (message) => {
     // TODO: also consider opening the person's messaging app directly
