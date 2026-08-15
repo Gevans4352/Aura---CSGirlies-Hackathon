@@ -9,6 +9,7 @@ import {
   getPendingDebrief,
   clearPendingDebrief,
 } from "../../lib/debriefStorage";
+import { useQuietMode } from "../../hooks/useQuietMode";
 import { api } from "../../utils/api";
 import "../../styles/Dashboard.css";
 
@@ -73,6 +74,7 @@ function getElapsedDayFraction() {
 }
 
 export default function Dashboard() {
+  const quiet = useQuietMode();
   const navigate = useNavigate();
   const [energyBudget, setEnergyBudget] = useState(62);
   const [spent, setSpent] = useState(() =>
@@ -135,7 +137,7 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="dash-page">
+    <div className={`dash-page ${quiet ? "quiet-mode" : ""}`}>
       <NavBar />
 
       <div className="dash-main">
@@ -309,19 +311,21 @@ export default function Dashboard() {
         </motion.div>
       </div>
 
-      <PostEventDebrief
-        isOpen={showDebrief}
-        eventLabel={debriefEventLabel}
-        onDismiss={() => {
-          setShowDebrief(false);
-          clearPendingDebrief();
-        }}
-        onOutcome={(outcome) => {
-          // TODO: feed this back into EAL baseline once you have
-          // somewhere real to send it.
-          console.log("Debrief outcome:", outcome);
-        }}
-      />
+      {!quiet && (
+        <PostEventDebrief
+          isOpen={showDebrief}
+          eventLabel={debriefEventLabel}
+          onDismiss={() => {
+            setShowDebrief(false);
+            clearPendingDebrief();
+          }}
+          onOutcome={(outcome) => {
+            // TODO: feed this back into EAL baseline once you have
+            // somewhere real to send it.
+            console.log("Debrief outcome:", outcome);
+          }}
+        />
+      )}
 
       <CalendarLoadModal
         isOpen={showCalendarLoad}

@@ -458,3 +458,8 @@
     transition: none;
   }
 }
+
+.quiet-mode .dash-sphere-wrap,
+.quiet-mode .dash-status {
+  display: none;
+}

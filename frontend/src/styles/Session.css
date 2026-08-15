@@ -156,3 +156,7 @@
     transition: none;
   }
 }
+
+.quiet-mode .session-sphere-wrap {
+  display: none;
+}

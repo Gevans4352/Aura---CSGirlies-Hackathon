@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { api, auth } from "../../utils/api";
 import { supabase } from "../../lib/supabase";
+import { setQuietMode } from "../../lib/quietMode";
 import "../../styles/Settings.css";
 
 const container = {
@@ -118,12 +119,14 @@ export default function Settings() {
   const [highContrast, setHighContrast] = useState(false);
   const [alerts, setAlerts] = useState({ meltdown: true, debrief: true });
   const [email, setEmail] = useState("");
+  const [answers, setAnswers] = useState(null);
 
   useEffect(() => {
     let active = true;
     api("/api/v1/onboarding")
       .then((data) => {
         if (!active) return;
+        setAnswers(data.answers);
         setQuietModeDefault(Boolean(data.quiet_mode_default));
         setTone(data.answers.communication_style === "A" ? "direct" : "gentle");
       })
@@ -137,6 +140,30 @@ export default function Settings() {
       active = false;
     };
   }, []);
+
+  const saveOnboarding = (nextAnswers, nextQuiet) => {
+    api("/api/v1/onboarding", {
+      method: "POST",
+      body: { answers: nextAnswers, quiet_mode_default: nextQuiet },
+    }).catch(() => {});
+  };
+
+  const handleToneChange = (value) => {
+    if (!answers) return;
+    setTone(value);
+    const next = {
+      ...answers,
+      communication_style: value === "direct" ? "A" : "B",
+    };
+    setAnswers(next);
+    saveOnboarding(next, quietModeDefault);
+  };
+
+  const handleQuietModeChange = (value) => {
+    setQuietModeDefault(value);
+    setQuietMode(value);
+    if (answers) saveOnboarding(answers, value);
+  };
 
   const handleSignOut = async () => {
     try {
@@ -259,11 +286,10 @@ export default function Settings() {
             control={
               <SelectField
                 value={tone}
-                onChange={setTone}
+                onChange={handleToneChange}
                 options={[
-                  { value: "gentle", label: "Gentle" },
-                  { value: "direct", label: "Direct" },
-                  { value: "clinical", label: "Clinical" },
+                  { value: "gentle", label: "Gentle (B)" },
+                  { value: "direct", label: "Direct (A)" },
                 ]}
               />
             }
@@ -294,7 +320,7 @@ export default function Settings() {
             control={
               <ToggleSwitch
                 checked={quietModeDefault}
-                onChange={setQuietModeDefault}
+                onChange={handleQuietModeChange}
                 label="Default to Quiet Mode"
               />
             }

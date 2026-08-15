@@ -2,6 +2,7 @@ import { useState, useRef, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import "../../styles/Onboarding.css";
 import { api } from "../../utils/api";
+import { setQuietMode } from "../../lib/quietMode";
 
 const PROMPT_SENTENCE =
   "The sun is warm on my face, and the meeting is almost over.";
@@ -118,6 +119,7 @@ export default function GetToKnowMe() {
         },
       });
 
+      setQuietMode(quietModeDefault);
       setStep("done");
     } catch (err) {
       setSubmitError(err.message);

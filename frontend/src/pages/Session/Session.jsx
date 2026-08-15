@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import ConsentBanner from "../../components/ConsentBanner/ConsentBanner";
 import StillListeningCheckIn from "../../components/StillListeningCheckIn/StillListeningCheckIn";
 import SessionWaveform from "../../components/SessionWaveform/SessionWaveform";
+import { useQuietMode } from "../../hooks/useQuietMode";
 import "../../styles/Session.css";
 
 // TODO: tune to your demo's real pacing — short here so it's easy to see
@@ -11,6 +12,7 @@ const BUFFER_MS = 90000;
 const CHECKIN_TIMEOUT_MS = 20000;
 
 export default function Session() {
+  const quiet = useQuietMode();
   const navigate = useNavigate();
   const [elapsedSeconds, setElapsedSeconds] = useState(0);
   const [showCheckIn, setShowCheckIn] = useState(false);
@@ -49,7 +51,7 @@ export default function Session() {
   };
 
   return (
-    <div className="session-page">
+    <div className={`session-page ${quiet ? "quiet-mode" : ""}`}>
       <ConsentBanner
         elapsedLabel={formatElapsed(elapsedSeconds)}
         onEndSession={endSession}
