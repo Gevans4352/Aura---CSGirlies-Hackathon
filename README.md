@@ -483,7 +483,7 @@ Aura tackles it by applying voice analysis to mental health, specifically for hi
 
 ## Impact
 
-Aura's trying to shift mental health monitoring from a reactive, self-reported model to something more proactive and physiologically-informed, while keeping the user — not the algorithm — in control of their own capacity and what they choose to disclose.
+Aura's trying to shift mental health monitoring from a reactive, self-reported model to something more proactive and physiologically-informed, while keeping the user not the algorithm in control of their own capacity and what they choose to disclose.
 
 For people with high-functioning depression, it's a reason to rest before exhaustion forces it on them. For autistic people who mask, it validates the actual physical cost of that performance and gives a structured way to step back without guilt. Fewer unexpected meltdowns and crashes could mean preserved relationships, more stable employment, and less personal distress overall. The privacy-first, consent-forward design means people don't have to trade their own safety, or the privacy of people around them, just to get that kind of insight.
 
