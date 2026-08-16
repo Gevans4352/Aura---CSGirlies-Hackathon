@@ -163,7 +163,7 @@ Implemented in Python with FastAPI, chosen for simplicity, speed, and automatic 
 This validates that the frontend/backend integration functions correctly, proving the system could ingest real data in a future iteration. Each call also stores a row in the `analyses` table, so the frontend can fetch the latest score afterwards.
 
 ### AI/ML (Simulation Strategy)
-For the hackathon, the AI/ML role focused on asset generation rather than real-time inference. Librosa was used offline to extract spectral centroid and jitter features from a real voice sample, visualized with Matplotlib for the pitch deck. A secondary "nervous system output" audio track was created by applying distortion and spectral shift effects to the calm voice track.
+The AI/ML role focused on asset generation, not real-time inference, resulting in two voice recordings, a calm version and a distorted version. Librosa was used offline to extract Spectral Centroid and Jitter features from the original audio sample (calm audio). Spectral Centroid measures the "Center Point" of an audio's frequency distribution, indicating how "bright" or "sharp" the voice sounds. Meanwhile, jitter measures the instability of the voice's pitch over time, capturing the degree of vibration in the audio. Both features were measures for the calm and distorted recordings, the visualized using Matplotlib to produce comparison graphs that are used in the "No Word Report" section of the Lie Detector demo.
 
 ## How It Works (Hackathon MVP)
 
