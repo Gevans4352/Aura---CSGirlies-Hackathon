@@ -16,7 +16,7 @@ HEALTH TRACK
 
 ## Overview
 
-Aura's a web app we built for a hackathon, three days start to finish. It's basically a different way to think about mental health instead of asking you how you feel, it looks at what your body's actually doing on its own, without you having to say anything.
+Aura's a web app we built for a hackathon, two days start to finish. It's basically a different way to think about mental health instead of asking you how you feel, it looks at what your body's actually doing on its own, without you having to say anything.
 
 When you use it, you get this realistic screen that shows the gap between what you're saying and what your body's actually saying. Like you might say "I'm fine," but your body's telling a completely different story. Aura shows that gap using a glowing ball, a sound comparison, and a timeline that predicts what might be coming next.
 
