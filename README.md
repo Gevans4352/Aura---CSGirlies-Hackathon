@@ -5,7 +5,7 @@
 
 - **Project Manager / Front-End Developer:** Genny
 - **Back-End Developer:** Camilú
-- **Product Designer:** Shana (Yve)
+- **Product Designer:** Shana (Yve) / udishadublish007 (content using shana GitHub repo)
 - **AI/ML Engineer:** Shyriri
 
 Everyone pitched in on the core vision, the actual build, and getting the pitch ready for the 3-day sprint.
