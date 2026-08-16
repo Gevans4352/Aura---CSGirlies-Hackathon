@@ -1,194 +1,238 @@
 # AURA
 **Emotional Immune System**
 
-A passive, edge-AI concept that listens to micro-tremors in the human voice during web-based calls to build a real-time Emotional Immune System score. Aura predicts depressive episodes and autistic meltdowns up to 72 hours before they manifest.
+## Team
+
+- **Project Manager / Front-End Developer:** Genny
+- **Back-End Developer:** Camilú
+- **Product Designer:** Shana (Yve)
+- **AI/ML Engineer:** Shyriri
+
+Everyone pitched in on the core vision, the actual build, and getting the pitch ready for the 3-day sprint.
+
+## Track 
+
+HEALTH TRACK 
 
 ## Overview
 
-Aura is a proof-of-concept web application developed for a 3-day hackathon sprint. It demonstrates a novel approach to mental health monitoring by shifting the focus from self-reported feelings to involuntary nervous system outputs.
+Aura's a web app we built for a hackathon, three days start to finish. It's basically a different way to think about mental health instead of asking you how you feel, it looks at what your body's actually doing on its own, without you having to say anything.
 
-The application presents a simulated yet highly realistic interface where users can experience the core premise: spoken words can say "I am fine" while the vocal nervous system betrays an entirely different reality. Aura visualizes this contradiction through an abstract glowing sphere, a side-by-side audio "lie detector" comparison, and a predictive alert timeline.
+When you use it, you get this realistic screen that shows the gap between what you're saying and what your body's actually saying. Like you might say "I'm fine," but your body's telling a completely different story. Aura shows that gap using a glowing ball, a sound comparison, and a timeline that predicts what might be coming next.
 
-The target users are individuals with high-functioning depression or masked autism who have been conditioned to ignore their internal signals until a severe episode occurs. The product aims to provide a silent, non-intrusive early warning system one that gives the user tools to act on that warning without draining the energy they don't have.
+Who it's for: people who are really good at hiding how they actually feel which maybe either depression, autism, that kind of thing. People who mask so well they don't even clock it themselves until something big hits. Aura's trying to give those people an early warning, basically an alarm that tells them to act before things get bad, so they can take care of themselves without burning through all their energy first.
 
 ## The Problem
 
-Prodromal blindness is Aura's term for the difficulty of recognizing the early signs of emotional or sensory overload before they become overwhelming.
+"Prodromal blindness" is basically what we call it when someone can't recognize the early signs of emotional or sensory overload before it hits them full force.
 
-Current mental health tools rely heavily on self-reporting, requiring users to consciously identify and report how they feel. Aura explores a different approach by combining brief self-reports with consented behavioral, environmental, physiological, and vocal signals to identify meaningful changes from a user's personal baseline.
+Most mental health tools rely heavily on self-reporting you have to consciously sit down and identify how you're feeling and report it yourself. Aura's trying a different approach, combining quick self-reports with behavioral, environmental, physiological, and vocal signals (with consent obviously) to actually catch meaningful changes from your own personal baseline.
 
-Rather than diagnosing or predicting with certainty, Aura helps users recognize rising load early enough to take action.
+Aura's not trying to diagnose or predict anything with certainty, it's just trying to help you recognize your load rising early enough that you can actually do something about it.
 
 ## Our Solution
 
-Aura addresses prodromal blindness by turning the voice into a silent, predictive health metric and pairs that prediction with low-effort, actionable tools for the moment it fires.
+Aura tackles prodromal blindness by turning your voice into a quiet, predictive signal, then pairs that with low-effort tools you can actually use in the moment it fires.
 
-From the user perspective, the product is a clean, ambient dashboard featuring a central "Aura Sphere." The user initiates a simulated call or explores a demo scenario. As the demo progresses, the sphere animates through three states: Stable (calm blue), Strained (amber-red), and Fractured (chaotic red alert).
+From the user's side, it's a clean, ambient dashboard built around a central "Aura Sphere." You start a session or run through a demo scenario, and as it progresses, the sphere animates through three states: Stable (calm blue), Strained (amber-red), and Fractured (chaotic red alert).
 
-The core demonstration is the "Vocal Analysis" screen. This screen plays a perfectly calm audio clip of someone saying, "I'm doing great. The project's on track. Honestly, I feel fine." Simultaneously, Aura displays a chaotic, jagged visualization labeled "Nervous System Output" with a high Emotional Allostatic Load score. This stark contrast forms the emotional shock factor of the pitch.
+The core of the experience is the Vocal Analysis screen, it compares your baseline against your current voice pattern and gives you an Emotional Authenticity Level score, showing how far what you're saying lines up with what your voice is actually doing underneath.
 
-The solution culminates in a "Meltdown Prodrome Alert" modal, which triggers a "Recalibration Protocol." This protocol suggests a low-demand schedule and provides pre-written templates to decline social commitments, giving the user actionable support before the predicted crash — reinforced by a self-directed "Energy Budget" so the user, not just the algorithm, stays in control of their capacity.
+That leads into a Meltdown Prodrome Alert, which triggers a Recalibration Protocol a low-demand schedule and pre-written templates for backing out of social commitments, so you've got actual support before the crash, not just after. There's also an Energy Budget you set yourself, so you (not just the algorithm) stay in control of your own capacity.
 
 ## Why This Is Different
 
-Aura differs from existing mental health applications and voice-biomarker platforms (e.g. clinical screening tools used in call centers and telehealth) across several dimensions.
+Aura's different from most mental health apps and voice-biomarker tools in a few ways:
 
-**Predictive versus Reactive.** Most mental health apps respond to a crisis or ask for a current mood rating. Aura provides a 72-hour forward-looking signal, turning a reactive tool into a preventive one.
+**Predictive, not reactive:** Most apps only respond once you're already in crisis, or ask for a mood rating in the moment. Aura's trying to give you a heads-up 72 hours ahead, so it's preventive instead of reactive.
 
-**Passive versus Active.** Existing solutions require the user to open an app and type or speak intentionally. Aura operates during existing web calls with minimal added effort from an already strained user.
+**Passive, not active:** Other tools need you to open the app and consciously type or speak into it. Aura's meant to run quietly in the background during calls you're already having, so it's not extra effort on top of everything else.
 
-**Nervous system versus Conscious thought.** Other tools rely on the user's ability to accurately assess their own state, which is notoriously unreliable during high-functioning depression. Aura bypasses the conscious brain entirely by monitoring involuntary vocal micro-tremors.
+**Nervous system, not conscious thought:** A lot of tools depend on you accurately reading your own state, which is genuinely hard when you're masking well. Aura skips the conscious brain entirely and looks at involuntary vocal micro-tremors instead.
 
-**Consumer versus Clinical/B2B.** Most voice-biomarker technology today is sold into hospitals, call centers, and insurers monitoring people from the outside. Aura is something the user opens themselves, on their own terms.
+**Consumer, not clinical/B2B:** Most voice-biomarker tech gets sold into hospitals and call centers to monitor people from the outside. Aura's something you open for yourself, on your own terms.
 
-**Privacy by physics versus Privacy by promise.** Many health apps ask users to trust that their data will be deleted. Aura is designed around the principle that raw audio never leaves the user's device, and that only the user's own microphone input — never a call's mixed output is ever analyzed, eliminating the need for trust in cloud storage or third-party voices being captured. *(Note: The hackathon MVP simulates this principle, with the architectural vision clearly defined.)*
+**Privacy by design, not just a promise:** A lot of health apps just ask you to trust that your data gets deleted. Aura's built around raw audio never leaving your device only your own mic input gets analyzed, never anyone else's voice on a call. *(Note: the hackathon MVP simulates this principle the real architecture is scoped, not fully built yet.)*
 
-**Specific targeting of masking.** General mental-health tools often focus on symptoms rather than the potential strain associated with autistic camouflaging. Aura introduces a Masking Strain Index (MSI), a prototype metric designed to estimate changes in masking-related strain using consented signals. It is not a clinical diagnostic measure, but a way to help users recognize when their current social and environmental demands may be exceeding their personal baseline.
+**Actually targeting masking:** Most mental health tools focus on symptoms, not the strain that comes from autistic camouflaging specifically. Aura introduces a Masking Strain Index which is not a clinical diagnosis, just a way to notice when your current social/environmental load might be going past your usual baseline.
 
-**Self-report as ground truth, not passive inference alone.** Aura pairs its voice-based signal with fast, optional self-report tools (Energy Budget, Post-Event Debrief) so the system's predictions are checked against and corrected by the user's own read of themselves over time.
+**Self-report as the real check, not just passive inference:** Aura pairs its voice signal with quick, optional self-reports (Energy Budget, Post-Event Debrief) so its predictions actually get checked and corrected against how you say things really went.
 
 ## Key Features
 
-### Aura Sphere Visualization
-The main dashboard features an abstract, glowing sphere that represents the user's current state. It animates between three distinct conditions: Stable (slow-pulsing deep blue), Strained (frantic amber-red), and Fractured (chaotic pulsing red alert). This provides an immediate, intuitive read on the user's nervous system load without requiring numerical analysis.
+### Aura Sphere
+The main dashboard's centered on an abstract glowing sphere that reflects your current state. It shifts between three conditions: Stable (slow-pulsing blue), Strained (amber-red), and Fractured (chaotic red). One glance tells you where you're at, no numbers needed.
 
-### Vocal Analysis Demo (The Lie Detector)
-This is the shock-factor feature. It presents two side-by-side visualizations. The first plays a calm audio waveform of a person saying they are fine. The second displays a simultaneous, chaotic visualization labeled "Aura Output" with the alert "Masking Fracture Detected. Emotional Authenticity Level: 18%." This feature starkly illustrates the gap between spoken words and nervous system reality.
+### Vocal Analysis
+This is where you actually see the gap. It compares your calm baseline voice against your current one side by side, and flags it with something like "Masking Fracture Detected. Emotional Authenticity Level: 18%." It's the moment that makes the whole point of Aura click.
 
-### Anomaly Event Simulation and Timeline
-A pre-populated dashboard timeline shows simulated historical events for a demo character. Examples include "Strain spike detected during Performance Review call" and "Masking fracture detected during Call with Mom." This timeline demonstrates how Aura would track and contextualize strain over time.
+### Meltdown Prodrome Alert
+A realistic alert that pops up mid-demo: "Your Aura is showing strain. Based on your vocal pattern, there's a 78% probability of a sensory meltdown in the next 24–48 hours. A low-demand protocol is suggested." This is the predictive piece in action.
 
-### Meltdown Prodrome Alert Simulation
-A realistic modal notification that triggers during the demo narrative. It states: "Your Aura is showing strain. Based on your vocal pattern, there is a 78% probability of a sensory meltdown in the next 24-48 hours. A low-demand protocol is suggested." This demonstrates the predictive intervention capability.
+### Recalibration Protocol
+After the alert, you land on a "social low-power mode" screen with a full library of boundary templates, not just one canned message.
 
-### Recalibration Protocol UI
-Following the alert, a dedicated screen offers a simulated "social low-power mode" protocol, expanded into a **full template library** (see below) rather than a single message.
+### Energy Budget
+Every morning you set your own capacity for example "3 out of 5 social budget today." Through the day, Aura tracks your spend against it as a gentle progress bar. Not a diagnosis, not something imposed on you not just something to check yourself against.
 
-### Energy Budget Ledger
-Each morning, the user sets their own self-reported capacity on a simple scale (e.g. "3/5 social budget today"). As the day progresses, Aura tracks spend against that budget as a visible, gentle progress bar — not a diagnosis, and not something the system imposes. This puts the user in the driver's seat and gives Aura a real, self-reported baseline to check its own predictions against.
+**MVP version:** A slider to set your morning budget, and a bar that depletes as simulated events happen through the demo. No backend needed, it's all held client-side.
 
-**MVP Implementation:** A slider to set the morning budget, and a progress bar UI that visually depletes as simulated "events" occur through the demo. No backend logic required — state is held client-side for the demo.
+### Boundary Templates
+Instead of one scripted "no," this is a small library of pre-written templates for common situations: rescheduling, shortening a meeting, asking for written follow-up instead of a call, or just declining outright. Each one toggles between a blunter or softer tone, so you've got the words ready even when you don't have the energy to write them yourself.
 
-### Boundary Templates Library 
-Rather than a single scripted decline message, this is a small library of pre-written templates for common situations: rescheduling, shortening a meeting, requesting written follow-up instead of a call, and declining a commitment outright. Each template can be toggled between a blunter or softer tone, so the user always has the right words ready when they don't have the energy to compose them.
+**MVP version:** 3–4 static templates with a blunt/soft toggle.
 
-**MVP Implementation:** 3–4 static text templates with a tone toggle (blunt/soft). No new logic just additional copy blocks and a UI toggle.
+### Quiet / Camouflage Mode
+A fully silent mode tracking still runs underneath, but no glowing sphere, no alert banners. For when you don't want your coping tool visibly on display at work or in public.
 
-### Quiet / Camouflage Mode 
-A fully silent mode that keeps the underlying tracking active but removes all visible output — no glowing sphere, no alert banners — for users who don't want their coping tool visibly on display in public or at work.
+**MVP version:** A CSS toggle that hides the sphere and alerts, shown live as a settings switch.
 
-**MVP Implementation:** A CSS class toggle that hides the sphere and alert UI, demonstrated live as a settings switch.
+### Post-Event Debrief
+After a flagged high-demand event, Aura just asks: "How did that actually go?" This closes the loop between what Aura predicted and what actually happened, so it builds trust over time instead of treating every alert as a one-off guess.
 
-### Post-Event Debrief 
-After a flagged high-demand event, Aura asks a simple two-question check-in: "How did that actually go?" This closes the loop between what Aura predicted and what the user actually experienced, building trust in the system's accuracy over time rather than treating every alert as a one-shot, unverified prediction.
-
-**MVP Implementation:** A two-button modal ( Went okay /  Went badly) that appears after a simulated flagged event. Fully functional for the demo 
+**MVP version:** A two-button modal (Went okay / Went badly) after a simulated flagged event. Fully working for the demo.
 
 ### Typing Pattern Awareness
-Typing speed, backspacing/editing frequency, and pause patterns while composing a message can reflect cognitive load without ever reading the content of what's typed sidestepping content-privacy concerns entirely while still surfacing something real ("you've been typing much slower and editing more than usual today").
+Your typing speed, how much you're backspacing, and your pause patterns can reflect cognitive load without Aura ever reading what you're actually typing so it sidesteps content privacy while still catching something real, like "you've been typing much slower and editing more than usual today."
 
-**MVP Implementation:** Simulated, not live-tracked. A canned insight is displayed at a scripted point in the demo (same technique as the EAL score), rather than instrumenting real keystroke capture — this avoids opening a second, harder-to-explain privacy surface during the hackathon.
+**MVP version:** Simulated, not live-tracked a insight shown at a scripted point in the demo rather than real keystroke capture, mainly to avoid opening a second privacy question during the hackathon.
 
-### Calendar Awareness 
-With permission, Aura would notice environmental/schedule load patterns such as "3 back-to-back social commitments today" treating schedule density as a measurable predictor of strain, distinct from and complementary to the voice signal.
+### Calendar Awareness
+With permission, Aura would notice schedule load, like "3 back-to-back social commitments today" treating a packed calendar as its own predictor of strain, separate from but working alongside the voice signal.
 
-**MVP Implementation:** Simulated with a hardcoded demo calendar (e.g. "3 back-to-back meetings"), not a real OAuth/Calendar API integration. Real calendar sync is scoped as a post-hackathon milestone (see Roadmap).
+**MVP version:** Simulated with a hardcoded demo calendar, not real OAuth/Calendar integration yet. Real calendar sync is on the roadmap.
 
 ## Security, Privacy & Consent
 
-Aura's MVP implements authenticated access through **email/password and Google sign-in**. The demo uses simulated analysis data and does not store raw voice recordings. The product architecture is built around concrete, structural consent principles rather than privacy being treated as a policy-only promise.
+Aura's MVP has authenticated access through email/password and Google sign-in. The demo uses simulated analysis data and doesn't store raw voice recordings. We built the architecture around actual consent principles, not just a privacy policy nobody reads.
 
-**Zero raw audio leaves this device.** In the envisioned production architecture, voice analysis occurs on the edge device using a local model. The backend receives only the minimum necessary derived data, using encrypted communication. The MVP UI communicates this privacy-first architecture, while the current demo uses simulated audio analysis.
+**Zero raw audio leaves the device:** In the full vision, voice analysis happens on-device with a local model, and the backend only ever gets the minimum derived data over encrypted communication. The MVP UI reflects this principle even though the current demo simulates the analysis.
 
-**Mic-input only, never call output.** Aura is designed to capture only the user's local microphone input through `getUserMedia`, rather than a call platform's mixed or system audio. This is intended to ensure Aura analyzes the user's own voice rather than other participants' audio. Headphones are recommended to reduce speaker bleed into the microphone.
+**Mic input only, never call output:** Aura's designed to capture only your own mic input through `getUserMedia`, not a call's mixed audio so it's analyzing your voice, not anyone else's. Headphones are recommended to keep speaker bleed out of the mic.
 
-**Consent Buffer.** Every active Aura session includes a fixed listening period, after which a blocking "Still listening?" check-in appears. If the user does not respond within the timeout window, the session ends and microphone access is released.
+**Consent Buffer:** Every active session has a fixed listening window, after which a blocking "Still listening?" check-in pops up. No response within the timeout, and the session ends and mic access gets released.
 
-**Persistent listening indicator.** While a session is active, a persistent, non-dismissible indicator remains visible so the user always knows Aura is actively listening.
+**Persistent listening indicator:** While a session's active, there's a non-dismissible indicator always visible so you know Aura's actually listening.
 
-**Manual session start.** Aura requires an explicit "Start Session" action and does not silently begin background listening. This reduces the risk of unintended microphone use.
+**Manual session start:** Aura needs an explicit "Start Session" click, so it never silently starts listening in the background.
 
-**User-controlled data.** Aura is designed around data minimization, explicit consent, and user control. Optional integrations and future data sources such as calendars, wearables, and capacity sharing require explicit user permission.
+**User-controlled data:** Built around data minimization, explicit consent, and user control throughout.
 
-The MVP demonstrates these principles through its authentication flow, session controls, privacy UX, and simulated data pipeline. Production deployment would add the necessary encryption, secure storage, retention, deletion, and access-control infrastructure required for handling sensitive wellbeing data.
+The MVP demonstrates all of this through the auth flow, session controls, privacy UX, and the simulated data pipeline. A real production version would need proper encryption, secure storage, retention rules, and access control on top of this.
+
+Aura's interface focuses on one main agenda: it reflects what the user tells it, it will not diagnose, infer, or detect. Every visual connection, decision, and implementation follows back to this main line. Its color palette ambience delivers a low sensory load, and its UI makes sure to avoid any sort of cognitive load.
+
+The lens for this project aims to reach something far beyond what can be built in 48 hours; however, we put in all efforts to deliver something that implements our vision: to help, to comfort, and mainly to never judge.
+
+### Screen Inventory
+
+**Auth & Onboarding**
+- Welcome / Sign Up / Sign In
+- New user: a few questions for Aura to know you better
+- "Let Aura hear your voice" — vocal baseline capture
+- "Find Your Typing Baseline" — typing pattern baseline capture
+- Privacy ("Your data. Your rules.")
+- "How should Aura respond?" — tone preference (Direct & Factual / Gentle & Supportive) + Quiet Mode default
+
+**Core App**
+- **Dashboard** — orb, Emotional Allostatic Load score, Energy Budget slider, Today's Insights, quick links to Calendar and Typing Baseline flows
+- **Active Listening** — live session state, recording your voice and tracking speech patterns, Run Voice Analysis to break down the session
+- **Vocal Analysis (Analysis tab)** — baseline vs. current waveform comparison, Emotional Authenticity Level (EAL) score with risk banding, Key Indicators (Pitch Variation, Speech Rate, Vocal Tension, etc.)
+- **Meltdown Prodrome Alert** — modal triggered from the analysis flow, showing predicted overload probability and a link to the Recalibration Protocol
+- **Calendar Load** — today's commitments pulled from a (simulated) calendar, Estimated Calendar Load score for calibration
+- **Timeline** — anomaly history (strain spikes, masking fracture events, social load spikes), Pattern Summary, Context Signals (typing pattern, calendar load)
+- **Recalibration Protocol** — current state summary, recommended actions, boundary-setting message templates
+
+### Design System
+
+- Dark navy blue background, orb gradient (cool → warm colors to signal different states), purple for primary actions and selected states.
+- Warm colors reserved for "alert" states, so they actually stand out and mean something at a glance.
+- Simple, bold fonts to keep cognitive load low.
+- Orb with a radial gradient and a soft outer glow, shifting color depending on state.
+- SIMULATED tags on calendar load, typing pattern insights, and other non-live data points on Home and Timeline, to visually separate demo data from the parts of the flow that are actually live and interactive.
+
+### Tools Used for Research & Design
+
+- [Calming Color Palette Psychology](https://color-analysis.app/blog/calming-color-palette-psychology) — for the comprehensive color palette
+- [Neurodiversity Design System](https://www.neurodiversity.design/) — referenced for component-level guidance (typography, motion, etc.)
+- Figma — main prototype design process for static screens, using auto-layout to reuse components across multiple screens instead of remaking them each time
 
 ## Accessibility and UX
 
-The application follows a dark-mode "Aurora" theme designed to be ambient and beautiful, avoiding a clinical aesthetic. The color palette uses deep blues and purples with alarming ambers and reds reserved for high-strain alerts.
+The app follows a dark-mode "Aurora" theme, meant to feel ambient rather than clinical. Deep blues and purples throughout, with ambers and reds saved specifically for high-strain alerts.
 
 Accessibility considerations include:
 
-- **Keyboard navigation:** All interactive elements are reachable via keyboard.
-- **Screen reader support:** The shocking "Aura Output" visualization has a text-based description for screen readers (e.g., "Alert: high strain detected").
-- **Color contrast:** Text and UI elements maintain sufficient contrast ratios against the dark background.
-- **Clear feedback:** Button states, loading indicators, and error messages provide immediate feedback to user actions.
-- **Personalized communication:** During onboarding, users can choose Aura's preferred communication style and tone.
-- **Notification preferences:** Users choose how frequently Aura checks in, such as once daily, twice daily, or at custom intervals.
-- **Quiet Mode:** Users can choose whether Quiet Mode is enabled by default, reducing visual notifications and interruptions.
-- **Text preferences:** Users can customize text size, readability, and other supported display preferences.
-- **User-controlled check-ins:** Check-ins are configurable and can be changed, paused, or disabled at any time.
-- **Reduced-motion support:** Users who prefer less animation can reduce or disable non-essential motion and visual effects.
-- **No critical information through color alone:** Aura's states and alerts use text, icons, or other indicators alongside color.
-- 
-The UX is designed around a three-act narrative: Calm, Crisis, and Rescue. Every click advances a clear human story of being rescued rather than a dry feature tour.
+- **Keyboard navigation:** every interactive element is reachable via keyboard
+- **Screen reader support:** the "Aura Output" visualization has a text description for screen readers (e.g. "Alert: high strain detected")
+- **Color contrast:** text and UI elements keep sufficient contrast against the dark background
+- **Clear feedback:** button states, loading indicators, and error messages give immediate feedback
+- **Personalized communication:** during onboarding, users pick Aura's preferred communication style and tone
+- **Notification preferences:** users choose check-in frequency — once daily, twice daily, or custom
+- **Quiet Mode:** users can choose whether Quiet Mode is on by default
+- **Text preferences:** customizable text size and readability settings
+- **User-controlled check-ins:** configurable, pausable, or fully disable-able at any time
+- **Reduced-motion support:** users who prefer less animation can turn down or off non-essential motion
+- **No critical info through color alone:** states and alerts always pair color with text or icons
 
+The UX is built around a three-act narrative: Calm, Crisis, and Rescue. Every click moves the story forward instead of feeling like a dry feature tour.
 
 ## Architecture
 
-The architecture for the hackathon MVP is intentionally lightweight to fit the 3-day sprint, focusing on UI fidelity and a convincing narrative flow.
+The hackathon MVP's architecture stayed intentionally lightweight to fit the 3-day sprint — focused on UI fidelity and a convincing flow over deep infrastructure.
 
-- **Frontend (React, Three.js/React Three Fiber, Framer Motion):** Handles UI rendering, Aura Sphere animations, audio playback, authentication, onboarding, consent/session controls, accessibility, and user interactions. Communicates with the backend for simulated score retrieval.
-- **Backend (Python FastAPI, Supabase): Provides Supabase-backed authentication and the vocal analysis endpoints. The analysis endpoint accepts a dummy file upload (ignored), immediately returns a pre-configured JSON payload, and persists the result per user, demonstrating the technical scaffolding for a future real analysis pipeline.
-- **Data Layer:** Onboarding responses are persisted in the `profiles` table and vocal analysis results in the `analyses` table. All other data is not persisted for the MVP. Data relating to the timeline, energy budget, and alerts is hard-coded or held in client-side state, reset on refresh.
-- **AI/ML Simulation:** Not running in real-time. Offline Python scripts using Librosa and Matplotlib generated the spectral centroid graphs, jitter visualizations, and the chaotic "nervous system output" audio track for the demo assets. Typing-pattern and calendar-awareness insights are similarly canned for the demo.
+- **Frontend (React, Three.js/React Three Fiber, Framer Motion):** handles UI rendering, Aura Sphere animations, audio playback, auth, onboarding, consent/session controls, accessibility, and user interactions. Talks to the backend for simulated score retrieval.
+- **Backend (Python FastAPI, Supabase):** handles Supabase-backed auth and the vocal analysis endpoints. The analysis endpoint takes a dummy file upload (ignored for now), returns a pre-configured JSON payload, and persists the result per user — the scaffolding's there for a real analysis pipeline down the line.
+- **Data Layer:** onboarding responses live in the `profiles` table, vocal analysis results in the `analyses` table. Everything else timeline, energy budget, alerts is hardcoded or held in client-side state and resets on refresh.
+- **AI/ML Simulation:** not running in real time. Offline Python scripts using Librosa and Matplotlib generated the spectral centroid graphs, jitter visualizations, and the "nervous system output" audio track used in the demo. Typing-pattern and calendar-awareness insights are similarly canned for now.
 
 ## Technical Implementation
 
 ### Frontend
-Built with React for rapid component development and clean state management. Three.js (via React Three Fiber) powers the Aura Sphere across its three core states. Framer Motion handles UI transitions and modal presentations, including the persistent consent banner and "Still listening?" check-in modal.
+Built with React for quick component development and clean state management. Three.js (via React Three Fiber) powers the Aura Sphere across its three states. Framer Motion handles the UI transitions and modal presentations, including the persistent consent banner and "Still listening?" check-in.
 
-The "Lie Detector" screen uses coordinated timing via `useEffect` to synchronize audio playback, waveform animation, and simulated score display.
+The Vocal Analysis screen uses `useEffect` to sync audio playback, waveform animation, and the score display all on the same timing.
 
 ### Backend
-The backend is written in Python using FastAPI. This framework was chosen because it is simple, quick to develop, and automatically generates API documentation. The application is organized into routers, each with a clear responsibility: one for authentication, one for service health, one for onboarding, and one for speech analysis. The configuration is loaded from a `.env` file for both the backend and the frontend, and the API enables CORS so that the frontend can call it without any issues.
+The backend's written in Python with FastAPI, mainly because it's simple, quick to build with, and generates its own API docs automatically. It's organized into routers, each with one clear job auth, service health, onboarding, and speech analysis. Config loads from `.env` for both the frontend and backend, and CORS is enabled so the frontend can call it without issues.
 
-The entire data and identity layer is powered by Supabase. The backend sets up two separate clients: one with the application’s public key, which is used for standard authentication operations (registration, login, token renewal), and another with the service key, which is used internally to read and write users’ protected data. Neither client is exposed to the browser; the frontend only communicates with the API. Authentication, on the other hand, is handled by Supabase. It supports registration with email and password, logging in with email or a Google account, logging out, and renewing the access token. Each protected endpoint validates the JWT token included in the request header before performing any action; if the token is invalid or expired, the API returns an error and does not access any data. In this way, the backend ensures that each user can only read and write their own information; these two backend development tools are what provide security for the project.
+Supabase powers the whole data and identity layer. The backend runs two separate clients: one with the public key for standard auth stuff (registration, login, token renewal), and another with the service key used internally to read and write users' protected data neither client is ever exposed to the browser, the frontend only ever talks to the API. Auth itself supports email/password registration, logging in with email or Google, logging out, and refreshing tokens. Every protected endpoint checks the JWT in the request header before doing anything if it's invalid or expired, the API just errors out without touching any data. That's what keeps each user locked to only their own information.
 
 ### AI/ML (Simulation Strategy)
-The AI/ML role focused on asset generation, not real-time inference, resulting in two voice recordings, a calm version and a distorted version. Librosa was used offline to extract Spectral Centroid and Jitter features from the original audio sample (calm audio). Spectral Centroid measures the "Center Point" of an audio's frequency distribution, indicating how "bright" or "sharp" the voice sounds. Meanwhile, jitter measures the instability of the voice's pitch over time, capturing the degree of vibration in the audio. Both features were measures for the calm and distorted recordings, the visualized using Matplotlib to produce comparison graphs that are used in the "No Word Report" section of the Lie Detector demo.
+The AI/ML work here was about generating assets, not running real-time inference we ended up with two voice recordings, a calm one and a distorted one. Librosa pulled Spectral Centroid and Jitter features from the calm audio offline. Spectral Centroid basically measures the "center point" of a voice's frequency range how bright or sharp it sounds. Jitter measures how unstable the pitch is over time — how much vibration is actually in the voice. We measured both on the calm and distorted versions and visualized them with Matplotlib for the comparison graphs used in the Vocal Analysis demo.
 
 ## How It Works (Hackathon MVP)
 
-1. User navigates to the web application. The frontend loads the Aura Sphere dashboard and core UI components.
-2. User sets their **Energy Budget** for the day via a simple slider.
-3. User clicks "Start Session" to begin a simulated call — the **persistent listening banner** appears.
-4. User clicks the "Vocal Analysis Demo" trigger, initiating a timed, pre-scripted animation sequence (calm audio + chaotic "Aura Output" visualization + high pre-calculated score).
-5. User explores the simulated timeline, populated by hard-coded JSON, and any simulated typing-pattern or calendar-load insights.
-6. User triggers the "Meltdown Prodrome Alert," revealing a realistic modal with a predictive probability.
-7. User views the **Recalibration Protocol**, selecting from the expanded boundary-templates library.
-8. Later, a **Post-Event Debrief** modal checks whether the flagged event matched reality.
-9. If a session buffer period elapses, a **"Still listening?" check-in** appears; no response auto-ends the session.
-10. Mock API integration: the frontend sends a dummy request to `/api/v1/analyze`; the backend returns the pre-configured EAL/MSI payload.
+1. You land on the app, the Aura Sphere dashboard and core UI load up
+2. You set your Energy Budget for the day on a simple slider
+3. You click "Start Session" to begin a simulated call 
+4. You trigger the Vocal Analysis demo a timed animation runs through calm audio + the "Aura Output" visualization + a pre-calculated score
+5. You explore the simulated timeline (hardcoded), and any simulated typing-pattern or calendar-load insights
+6. You trigger the Meltdown Prodrome Alert, which shows a predictive probability
+7. You view the Recalibration Protocol and browse the boundary-templates library
+8. Later, a Post-Event Debrief checks whether the flagged event actually matched what happened
+9. If a session buffer runs out, a "Still listening?" check-in fires no response ends the session automatically
+10. Mock API call: the frontend sends a dummy request to `/api/v1/analyze`, and the backend returns the pre-configured EAL/MSI payload
 
 ## Limitations
 
-This is a proof-of-concept simulation, not a production-ready application.
+This is a proof-of-concept, not a production-ready app.
 
-- **Simulated AI.** All voice analysis, scoring, typing-pattern insight, calendar awareness, and predictions are simulated with pre-rendered assets and hard-coded JSON responses. There is no real-time feature extraction or machine learning inference.
-- **No real data persistence.** The timeline, energy budget, and user state are not stored across sessions.
-- **Limited device testing.** Primarily tested on modern desktop browsers.
-- **Predictive claims.** The 72-hour predictive window and probability percentages (e.g., 78%) are illustrative for the demo, not derived from clinical data or validated models.
-- **No integration with actual video call platforms.** The MVP does not integrate with Zoom, Teams, or Google Meet. The "call" is simulated within the demo flow, and the mic-only capture architecture is a stated design principle, not yet implemented against a live call.
-- **API integration.** In the demo, the analysis is a local simulation within the browser; the backend analysis endpoint exists and responds, but the process of sending the audio file from the frontend is not yet connected.
+- **Simulated AI:** All voice analysis, scoring, typing-pattern insight, calendar awareness, and predictions run on pre-rendered assets and hardcoded JSON, not real-time feature extraction or inference.
+- **No real data persistence:** Timeline, energy budget, and most user state don't persist across sessions.
+- **Limited device testing:** Mostly tested on modern desktop browsers.
+- **Predictive claims:** The 72-hour window and probability percentages (like 78%) are illustrative for the demo, not pulled from clinical data or validated models.
+- **No real video call integration:** No Zoom, Teams, or Meet integration yet the "call" is simulated, and the mic-only capture architecture is a design principle we haven't fully implemented against a live call yet.
+- **API integration:** In the demo, analysis runs as a local simulation in the browser, the backend endpoint exists and responds, but actually sending the audio file from the frontend isn't wired up yet.
 
 ## Roadmap
 
-### Completed (Hackathon MVP)
-- Aura Sphere visualization with three distinct states
-- Vocal Analysis "Lie Detector" side-by-side demo
-- Simulated Anomaly Event Timeline
+**Completed (Hackathon MVP)**
+- Aura Sphere with three states
+- Vocal Analysis side-by-side demo
+- Simulated Anomaly Timeline
 - Meltdown Prodrome Alert modal
-- Recalibration Protocol UI with expanded boundary-templates library
+- Recalibration Protocol with the expanded boundary-templates library
 - Energy Budget ledger
 - Quiet/Camouflage mode
 - Post-Event Debrief
@@ -196,18 +240,18 @@ This is a proof-of-concept simulation, not a production-ready application.
 - Simulated typing-pattern and calendar-awareness insights
 - Mock backend API endpoint
 
-### Next Steps (Post-Hackathon)
-- Transition from simulated audio to real-time microphone input
-- Develop the core feature extraction pipeline in JavaScript/WebAssembly
-- Implement real calendar awareness via OAuth/Calendar API
-- Implement real, privacy-preserving typing-pattern tracking (opt-in, content never read)
+**Next Steps (Post-Hackathon)**
+- Move from simulated audio to real-time mic input
+- Build the real feature extraction pipeline in JavaScript/WebAssembly
+- Real calendar awareness via OAuth/Calendar API
+- Real, privacy-preserving typing-pattern tracking (opt-in, content never read)
 - "Translate this for me" — optional gentler-rephrase suggestions for outgoing messages
 
-### Vision
-- Full Edge-AI deployment with zero data leakage
-- Wearable integration (resting heart rate, sleep quality) as supporting, non-primary context
+**Vision**
+- Full edge-AI deployment, zero data leakage
+- Wearable integration (resting heart rate, sleep) as supporting context, not the primary signal
 - Optional, user-controlled sharing of capacity status with trusted contacts
-- Real mic-only capture architecture validated against live Zoom/Meet calls
+- Real mic-only capture validated against live Zoom/Meet calls
 
 ## Installation
 
@@ -264,7 +308,7 @@ uvicorn app.main:app --reload --port 8000
 cd frontend
 npm run dev
 ```
-The application will be available at `http://localhost:5173`.
+The app runs at `http://localhost:5173`.
 
 ### Build for Production
 ```bash
@@ -274,19 +318,20 @@ npm run build
 
 ## Usage
 
-1. **Dashboard:** Observe the Aura Sphere in its default "Stable" state.
-2. **Set Energy Budget:** Use the morning slider to set today's capacity.
-3. **Start Session:** Click "Start Session" to see the persistent listening banner.
-4. **Lie Detector Demo:** Click "Run Vocal Analysis." Watch the side-by-side comparison of calm spoken words versus chaotic nervous system output.
-5. **Timeline:** Scroll through the pre-populated "Anomaly Events."
-6. **Trigger Alert:** Click "Simulate Strain" to force the Meltdown Prodrome Alert modal.
-7. **Recalibration:** Browse the expanded boundary-templates library and toggle tone (blunt/soft).
-8. **Quiet Mode:** Toggle Quiet/Camouflage mode to see the silent UI state.
-9. **Debrief:** Respond to the Post-Event Debrief modal after a flagged event.
-10. **Consent Buffer:** Wait out the demo buffer period to see the "Still listening?" check-in fire.
+1. **Dashboard:** see the Aura Sphere in its default "Stable" state
+2. **Set Energy Budget:** use the morning slider to set today's capacity
+3. **Start Session:** click "Start Session" to see the persistent listening banner
+4. **Vocal Analysis Demo:** click "Run Vocal Analysis" and watch the side-by-side comparison
+5. **Timeline:** scroll through the pre-populated "Anomaly Events"
+6. **Trigger Alert:** click "Simulate Strain" to force the Meltdown Prodrome Alert modal
+7. **Recalibration:** browse the boundary-templates library and toggle tone (blunt/soft)
+8. **Quiet Mode:** toggle Quiet/Camouflage mode to see the silent UI state
+9. **Debrief:** respond to the Post-Event Debrief modal after a flagged event
+10. **Consent Buffer:** wait out the demo buffer to see the "Still listening?" check-in fire
 
 ## API Documentation
-> I always recommend running the backend and checking out http://127.0.0.1:8000/docs for a better experience
+> Best experience is running the backend locally and checking out http://127.0.0.1:8000/docs
+
 | Method | Endpoint | Description | Authentication |
 |---|---|---|---|
 | POST | `/api/v1/auth/register` | Creates a user and returns session tokens. Body: `{name, email, password}` | None |
@@ -298,7 +343,7 @@ npm run build
 | POST | `/api/v1/analyze` | Simulated vocal analysis. Persists the result and returns a pre-calculated stress score. | Bearer token |
 | GET | `/api/v1/analysis/latest` | Returns the authenticated user's most recent vocal analysis | Bearer token |
 | GET | `/api/v1/onboarding` | Returns the authenticated user's onboarding profile and derived baseline | Bearer token |
-| POST | `/api/v1/onboarding` | Saves onboarding answers and derives baseline MSI. `Body: {answers: {...}, quiet_mode_default?: boolean}` | Bearer token |
+| POST | `/api/v1/onboarding` | Saves onboarding answers and derives baseline MSI. Body: `{answers: {...}, quiet_mode_default?: boolean}` | Bearer token |
 
 **Auth Response (200 OK):** `register` and `login` return session tokens:
 
@@ -314,7 +359,7 @@ npm run build
 }
 ```
 
-**Analyze Request:** The endpoint returns `500 {"detail": "Analysis service unavailable"}` when the backend runs with `ANALYZE_ENABLED=false`.
+**Analyze Request:** returns `500 {"detail": "Analysis service unavailable"}` when the backend runs with `ANALYZE_ENABLED=false`.
 
 **Request Body:** Form-data with a `file` field (optional, ignored).
 
@@ -339,7 +384,7 @@ npm run build
 aura/
 ├── backend/
 │   ├── requirements.txt        # Python dependencies
-│   ├── sql/                    # Tables + RLS.
+│   ├── sql/                    # Tables + RLS
 │   └── app/
 │       ├── main.py             # FastAPI app, CORS, routers
 │       ├── core/config.py      # Settings from .env
@@ -351,21 +396,36 @@ aura/
 │   │   └── audio/                 # Pre-recorded demo audio
 │   ├── src/
 │   │   ├── components/            # Reusable UI components
+│   │   │   ├── AmbientQuote/
 │   │   │   ├── AuraSphere/
-│   │   │   ├── Timeline/
-│   │   │   ├── Modal/
+│   │   │   ├── CalendarLoadModal/
 │   │   │   ├── ConsentBanner/
-│   │   │   └── ...
+│   │   │   ├── MeltdownProdromeAlert/
+│   │   │   ├── Modal/
+│   │   │   ├── NavBar/
+│   │   │   ├── PostEventDebrief/
+│   │   │   ├── StillListeningCheckIn/
+│   │   │   ├── Timeline/
+│   │   │   └── VocalAnalysisReveal/
 │   │   ├── pages/                 # Page-level components
-│   │   │   ├── Login/
-│   │   │   ├── Signup/
+│   │   │   ├── Analysis/
 │   │   │   ├── Dashboard/
-│   │   │   ├── LieDetector/
-│   │   │   └── Recalibration/
+│   │   │   ├── Landing/
+│   │   │   ├── Login/
+│   │   │   ├── NotFound/
+│   │   │   ├── Onboarding/
+│   │   │   ├── Recalibration/
+│   │   │   ├── Register/
+│   │   │   ├── Session/
+│   │   │   └── Settings/
 │   │   ├── hooks/                 # Reusable React hooks
 │   │   ├── utils/                 # API client and utility functions
 │   │   ├── styles/                # Global styles and theme
-│   │   ├── lib/supabase.js     # Supabase client (Google OAuth)
+│   │   ├── lib/
+│   │   │   ├── debriefStorage.js
+│   │   │   ├── onboardingStorage.js
+│   │   │   ├── quietMode.js
+│   │   │   └── supabase.js        # Supabase client (Google OAuth)
 │   │   ├── App.jsx
 │   │   └── main.jsx
 │   ├── index.html
@@ -377,70 +437,55 @@ aura/
 
 ## Technical Decisions
 
-- **React** was chosen for the frontend to leverage component-based architecture, enabling rapid development and clean state management for the demo narrative flow.*
--  **Three.js (React Three Fiber)** was selected for the Aura Sphere to create smooth, lightweight 3D animations across its three core states. The visual transitions help communicate Aura's high-tech, neural-inspired experience while remaining suitable for a responsive web interface.
-- **Framer Motion** handles UI transitions and modal animations, including the consent banner and check-in modal, at a smooth 60fps without complex manual animation code.
-- **Python with FastAPI** was chosen for the backend because it is simple and easy to develop with. Since this was a project that needed to be implemented quickly, setting up a more complex infrastructure—such as microservices and Kubernetes—would only have slowed down development.
-- **Simulated AI/ML, typing-pattern, and calendar signals** were chosen out of necessity for the 3-day sprint, allowing the team to focus on UX, narrative, and visual fidelity within the sprint timeline.
+- **React** — component-based architecture made sense for rapid development and clean state management for the demo flow
+- **Framer Motion** — handles UI transitions and modal animations, including the consent banner and check-in modal, at a smooth 60fps without hand-rolling animation logic
+- **Python with FastAPI** — simple and fast to build with. Given the 3-day timeline, setting up something heavier like microservices or Kubernetes would've just slowed us down
+- **Simulated AI/ML, typing-pattern, and calendar signals** — necessary given the sprint length, so we could focus energy on UX, narrative, and visual fidelity instead
 
 ## Challenges and Solutions
 
-**Challenge:** Creating a believable "lie detector" effect without real-time AI.
-**Solution:** Librosa was used offline to generate realistic spectral centroid and jitter graphs from a real voice sample, animated and timed precisely to the pre-recorded audio clip.
+**Challenge:** creating a believable analysis effect without real-time AI.
+**Solution:** used Librosa offline to generate realistic spectral centroid and jitter graphs from a real voice sample, animated and timed precisely against the pre-recorded audio.
 
-**Challenge:** Balancing technical honesty with an ambitious vision.
-**Solution:** The architecture and README clearly label MVP components versus the future production vision, while positioning the privacy and predictive concepts as the core intellectual property.
+**Challenge:** balancing technical honesty with an ambitious vision.
+**Solution:** clearly labeled MVP components vs. the future production vision throughout the architecture and README, while treating the privacy and predictive concepts as the actual core IP.
 
-**Challenge:** Preventing the mic from being left on unintentionally, and protecting non-users' privacy during calls.
-**Solution:** Designed a mic-input-only capture architecture, a persistent non-dismissible listening indicator, and a Consent Buffer that auto-ends sessions without a response — see Security, Privacy & Consent above.
+**Challenge:** stopping the mic from being left on by accident, and protecting the privacy of anyone else on a call.
+**Solution:** built a mic-input-only capture architecture, a persistent non-dismissible listening indicator, and a Consent Buffer that auto-ends sessions with no response.
 
-**Challenge:** Maintaining smooth 60fps animations across different hardware.
-**Solution:** Optimized sphere animation states using simple geometry and efficient shader techniques; used Framer Motion's hardware-accelerated transforms; tested on multiple devices.
+**Challenge:** keeping animations smooth at 60fps across different hardware.
+**Solution:** optimized the sphere's animation states with simple geometry and efficient shaders, used Framer Motion's hardware-accelerated transforms, and tested across multiple devices.
 
 ## Testing
 
-- **UI/UX Testing:** All animations, transitions, and modal triggers validated across Chrome, Firefox, and Safari.
-- **Integration Testing:** Frontend/backend connection has been tested through the login process, onboarding, retrieving the latest analysis, and correctly displaying the data on the dashboard.
-- **Accessibility Spot Checks:** Basic keyboard navigation and screen reader text descriptions verified.
+- **UI/UX Testing:** all animations, transitions, and modal triggers checked across Chrome, Firefox, and Safari
+- **Integration Testing:** frontend/backend connection tested through login, onboarding, retrieving the latest analysis, and displaying that data correctly on the dashboard
+- **Accessibility Spot Checks:** basic keyboard navigation and screen reader text descriptions verified
 
-A comprehensive testing suite (unit, integration, end-to-end) has not been implemented for the hackathon. A recommended future plan would use Jest and React Testing Library for the frontend and pytest for the backend.
+A full testing suite (unit, integration, end-to-end) hasn't been built out yet for the hackathon version. Next step would be Jest and React Testing Library on the frontend, pytest on the backend.
 
 ## Deployment
 
-Not currently deployed to production. Intended deployment strategy:
-
-- **Frontend:** Static site on Render.
-- **Backend:** Containerized service on Render.
-
-For the hackathon demo, the application is run locally from development servers.
+- **Frontend:** Static Site on Render
+- **Backend:** Web Service on Render
 
 ## Demo
 
-- **Live Application:** [NEEDS INPUT: URL]
 - **Repository:** https://github.com/Gevans4352/Aura---CSGirlies-Hackathon
-- **Demo Video:** [NEEDS INPUT: YouTube URL]
-- **Screenshots:** [NEEDS INPUT: Link to screenshots or images]
-
-## Team
-
-- **Project Manager / Front-End Developer:** Genny
-- **Back-End Developer:** Camilú
-- **Product Designer:** yve
-- **AI/ML Engineer:** shyriri
-
-Each team member contributed to the core vision, execution, and pitch preparation for the 3-day hackathon sprint.
+- **Demo Video:** https://youtu.be/ZDCayvEf-5E?si=uCGcdAL5eGu_HKyU
+- **Screenshots / Prototype:** https://www.figma.com/design/baxvRCmi870K5NN8ZzMN99/AURA---Prototype?node-id=0-1
 
 ## Hackathon Context
 
-This project was developed for Computer science girlies. The hackathon challenge focused on Technology for wellness
+This project was built for CS Girlies. The challenge was Technology for Wellness.
 
-Aura addresses the challenge by applying advanced voice analysis concepts to mental health, specifically tailored for high-masking and high-functioning individuals, a demographic underserved by generic mental health tools. The simulation strategy allowed the team to deliver a high-fidelity user experience and a compelling narrative within the sprint, demonstrating both technical scoping and product vision.
+Aura tackles it by applying voice analysis to mental health, specifically for high-masking and high-functioning people  a group most generic mental health tools tend to miss which belongs to the Health track. The simulation strategy let the team deliver a high-fidelity experience and a real narrative within the sprint, while still showing the technical scope and product vision behind it.
 
 ## Impact
 
-Aura has the potential to shift the paradigm of mental health monitoring from a reactive, self-reported model to a proactive, physiologically-informed one, while keeping the user, not the algorithm, in control of their own capacity and disclosure.
+Aura's trying to shift mental health monitoring from a reactive, self-reported model to something more proactive and physiologically-informed, while keeping the user — not the algorithm — in control of their own capacity and what they choose to disclose.
 
-For individuals with high-functioning depression, it offers a reason to rest before exhaustion forces it upon them. For autistic individuals who mask, it validates the physical cost of their social performance and offers a structured way to step back without guilt. By reducing the incidence of unexpected meltdowns and depressive crashes, Aura could preserve relationships, maintain employment stability, and reduce personal distress. The privacy-first, consent-forward architecture ensures users do not have to trade their personal safety or the privacy of people around them — for predictive insight.
+For people with high-functioning depression, it's a reason to rest before exhaustion forces it on them. For autistic people who mask, it validates the actual physical cost of that performance and gives a structured way to step back without guilt. Fewer unexpected meltdowns and crashes could mean preserved relationships, more stable employment, and less personal distress overall. The privacy-first, consent-forward design means people don't have to trade their own safety, or the privacy of people around them, just to get that kind of insight.
 
 ## License
 
@@ -451,7 +496,6 @@ MIT License
 The Aura team acknowledges the following libraries and tools used in development:
 
 - React and React DOM
-- Three.js and React-Three-Fiber
 - Framer Motion
 - FastAPI and Uvicorn
 - Python and Librosa
