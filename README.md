@@ -138,7 +138,7 @@ The UX is designed around a three-act narrative: Calm, Crisis, and Rescue. Every
 The architecture for the hackathon MVP is intentionally lightweight to fit the 3-day sprint, focusing on UI fidelity and a convincing narrative flow.
 
 - **Frontend (React, Three.js/React Three Fiber, Framer Motion):** Handles UI rendering, Aura Sphere animations, audio playback, authentication, onboarding, consent/session controls, accessibility, and user interactions. Communicates with the backend for simulated score retrieval.
-- **Backend (Python FastAPI):** Provides Supabase-backed authentication (`/api/v1/auth`) and the vocal analysis endpoints (`POST /api/v1/analyze`, `GET /api/v1/analysis/latest`). The analysis endpoint accepts a dummy file upload (ignored), immediately returns a pre-configured JSON payload, and persists the result per user, demonstrating the technical scaffolding for a future real analysis pipeline.
+- **Backend (Python FastAPI, Supabase): Provides Supabase-backed authentication and the vocal analysis endpoints. The analysis endpoint accepts a dummy file upload (ignored), immediately returns a pre-configured JSON payload, and persists the result per user, demonstrating the technical scaffolding for a future real analysis pipeline.
 - **Data Layer:** Onboarding responses are persisted in the `profiles` table and vocal analysis results in the `analyses` table. All other data is not persisted for the MVP. Data relating to the timeline, energy budget, and alerts is hard-coded or held in client-side state, reset on refresh.
 - **AI/ML Simulation:** Not running in real-time. Offline Python scripts using Librosa and Matplotlib generated the spectral centroid graphs, jitter visualizations, and the chaotic "nervous system output" audio track for the demo assets. Typing-pattern and calendar-awareness insights are similarly canned for the demo.
 
@@ -150,17 +150,9 @@ Built with React for rapid component development and clean state management. Thr
 The "Lie Detector" screen uses coordinated timing via `useEffect` to synchronize audio playback, waveform animation, and simulated score display.
 
 ### Backend
-Implemented in Python with FastAPI, chosen for simplicity, speed, and automatic OpenAPI documentation. The critical endpoint, `POST /api/v1/analyze`, ignores any uploaded file and returns a static payload:
+The backend is written in Python using FastAPI. This framework was chosen because it is simple, quick to develop, and automatically generates API documentation. The application is organized into routers, each with a clear responsibility: one for authentication, one for service health, one for onboarding, and one for speech analysis. The configuration is loaded from a `.env` file for both the backend and the frontend, and the API enables CORS so that the frontend can call it without any issues.
 
-```json
-{
-  "emotional_allostatic_load": 18,
-  "masking_strain_index": 87,
-  "timestamp": "2026-07-03T14:00:00Z"
-}
-```
-
-This validates that the frontend/backend integration functions correctly, proving the system could ingest real data in a future iteration. Each call also stores a row in the `analyses` table, so the frontend can fetch the latest score afterwards.
+The entire data and identity layer is powered by Supabase. The backend sets up two separate clients: one with the application’s public key, which is used for standard authentication operations (registration, login, token renewal), and another with the service key, which is used internally to read and write users’ protected data. Neither client is exposed to the browser; the frontend only communicates with the API. Authentication, on the other hand, is handled by Supabase. It supports registration with email and password, logging in with email or a Google account, logging out, and renewing the access token. Each protected endpoint validates the JWT token included in the request header before performing any action; if the token is invalid or expired, the API returns an error and does not access any data. In this way, the backend ensures that each user can only read and write their own information; these two backend development tools are what provide security for the project.
 
 ### AI/ML (Simulation Strategy)
 The AI/ML role focused on asset generation, not real-time inference, resulting in two voice recordings, a calm version and a distorted version. Librosa was used offline to extract Spectral Centroid and Jitter features from the original audio sample (calm audio). Spectral Centroid measures the "Center Point" of an audio's frequency distribution, indicating how "bright" or "sharp" the voice sounds. Meanwhile, jitter measures the instability of the voice's pitch over time, capturing the degree of vibration in the audio. Both features were measures for the calm and distorted recordings, the visualized using Matplotlib to produce comparison graphs that are used in the "No Word Report" section of the Lie Detector demo.
@@ -187,6 +179,7 @@ This is a proof-of-concept simulation, not a production-ready application.
 - **Limited device testing.** Primarily tested on modern desktop browsers.
 - **Predictive claims.** The 72-hour predictive window and probability percentages (e.g., 78%) are illustrative for the demo, not derived from clinical data or validated models.
 - **No integration with actual video call platforms.** The MVP does not integrate with Zoom, Teams, or Google Meet. The "call" is simulated within the demo flow, and the mic-only capture architecture is a stated design principle, not yet implemented against a live call.
+- **API integration.** In the demo, the analysis is a local simulation within the browser; the backend analysis endpoint exists and responds, but the process of sending the audio file from the frontend is not yet connected.
 
 ## Roadmap
 
@@ -293,7 +286,7 @@ npm run build
 10. **Consent Buffer:** Wait out the demo buffer period to see the "Still listening?" check-in fire.
 
 ## API Documentation
-
+> I always recommend running the backend and checking out http://127.0.0.1:8000/docs for a better experience
 | Method | Endpoint | Description | Authentication |
 |---|---|---|---|
 | POST | `/api/v1/auth/register` | Creates a user and returns session tokens. Body: `{name, email, password}` | None |
@@ -346,7 +339,7 @@ npm run build
 aura/
 ├── backend/
 │   ├── requirements.txt        # Python dependencies
-│   ├── sql/                    # profiles table migration.
+│   ├── sql/                    # Tables + RLS.
 │   └── app/
 │       ├── main.py             # FastAPI app, CORS, routers
 │       ├── core/config.py      # Settings from .env
@@ -387,7 +380,7 @@ aura/
 - **React** was chosen for the frontend to leverage component-based architecture, enabling rapid development and clean state management for the demo narrative flow.*
 -  **Three.js (React Three Fiber)** was selected for the Aura Sphere to create smooth, lightweight 3D animations across its three core states. The visual transitions help communicate Aura's high-tech, neural-inspired experience while remaining suitable for a responsive web interface.
 - **Framer Motion** handles UI transitions and modal animations, including the consent banner and check-in modal, at a smooth 60fps without complex manual animation code.
-- **Python with FastAPI** was chosen for the backend for its simplicity and rapid prototyping capabilities.
+- **Python with FastAPI** was chosen for the backend because it is simple and easy to develop with. Since this was a project that needed to be implemented quickly, setting up a more complex infrastructure—such as microservices and Kubernetes—would only have slowed down development.
 - **Simulated AI/ML, typing-pattern, and calendar signals** were chosen out of necessity for the 3-day sprint, allowing the team to focus on UX, narrative, and visual fidelity within the sprint timeline.
 
 ## Challenges and Solutions
@@ -407,7 +400,7 @@ aura/
 ## Testing
 
 - **UI/UX Testing:** All animations, transitions, and modal triggers validated across Chrome, Firefox, and Safari.
-- **Integration Testing:** Frontend/backend connection to `/api/v1/analyze` tested; frontend correctly renders updated state from a successful response.
+- **Integration Testing:** Frontend/backend connection has been tested through the login process, onboarding, retrieving the latest analysis, and correctly displaying the data on the dashboard.
 - **Accessibility Spot Checks:** Basic keyboard navigation and screen reader text descriptions verified.
 
 A comprehensive testing suite (unit, integration, end-to-end) has not been implemented for the hackathon. A recommended future plan would use Jest and React Testing Library for the frontend and pytest for the backend.
